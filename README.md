@@ -1,33 +1,32 @@
 # THƯ CÁ
 
-Website đọc truyện và xem video, triển khai dạng static site trên GitHub Pages.
+Website thư viện truyện và video, triển khai trên GitHub Pages theo hướng local-first, ưu tiên miễn phí.
 
-## Hiện có
-- Trang khám phá, kho truyện, chi tiết truyện và trình đọc chương.
-- Tủ sách lưu trên trình duyệt.
-- Danh mục video (hiện nhận URL video).
-- Quản trị cơ bản: thêm/xóa truyện, thêm chương đầu, thêm video.
-- Nhập/xuất dữ liệu JSON.
-- Giao diện responsive cho máy tính và điện thoại.
+## Chức năng hiện có trong bản nâng cấp
+- Trang khám phá, kho truyện, tìm kiếm theo tên/tác giả, sắp xếp A–Z.
+- Quản lý truyện: thêm, sửa, xóa, mô tả, tác giả, trạng thái và ảnh bìa.
+- Quản lý chương: thêm, sửa, xóa, đổi thứ tự chương.
+- Nhập chương hàng loạt từ TXT/HTML hoặc dán văn bản; tự tách theo một số mẫu tiêu đề chương thông dụng và xem trước trước khi nhập.
+- Trang chi tiết truyện, trình đọc chương, chuyển chương trước/sau và tủ sách.
+- Quản lý video bằng URL MP4 trực tiếp, YouTube hoặc Vimeo.
+- Quản lý phụ đề SRT/VTT: nhập, chỉnh sửa bản gốc và bản tiếng Việt, xuất SRT/VTT.
+- Sao lưu toàn bộ dữ liệu JSON và khôi phục từ bản sao lưu.
+- Giao diện responsive cho điện thoại và máy tính.
 
-## Chạy thử
-Mở `index.html` bằng trình duyệt hoặc chạy static server tại thư mục dự án.
+## Mở website
+https://quynhnhucr010179-maker.github.io/Thu-Cac/
 
-## Triển khai GitHub Pages
-1. Vào **Settings → Pages** trong repository.
-2. Chọn **Source: GitHub Actions**.
-3. Workflow `.github/workflows/pages.yml` sẽ triển khai khi có commit lên nhánh `main`.
-4. Địa chỉ thường có dạng `https://quynhnhucr010179-maker.github.io/Thu-Cac/`.
+## Dữ liệu và giới hạn quan trọng
+- Dữ liệu được lưu trong localStorage của trình duyệt đang sử dụng. Không tự đồng bộ giữa điện thoại và máy tính, cũng không có đăng nhập hoặc phân quyền quản trị thật.
+- Hãy xuất JSON định kỳ. Ảnh bìa được nén nhưng vẫn chiếm dung lượng trình duyệt; nếu bộ nhớ đầy, hãy giảm ảnh hoặc sao lưu.
+- Nhập chương hàng loạt là bộ tách theo mẫu tiêu đề phổ biến, không thể bảo đảm nhận diện đúng mọi website/ngôn ngữ. Cần xem trước và kiểm tra thứ tự.
+- Video từ YouTube/Vimeo phát qua trình nhúng của nhà cung cấp; MP4 cần là URL truy cập trực tiếp. Không tải video từ nền tảng khác về.
+- Phụ đề có thể nhập/chỉnh sửa/xuất SRT/VTT. Bản hiện tại chưa tự nhận diện giọng nói, chưa tự dịch video, chưa tạo giọng đọc và chưa tự căn thời gian phụ đề.
+- Chưa có backend, lưu trữ file đám mây, đồng bộ đa thiết bị, tài khoản người dùng hay API dịch.
+- Chưa nhập dữ liệu Firestore/Storage của bản Claude Artifact cũ. Cần bản export thực tế để khôi phục đủ 13 truyện và dữ liệu video cũ; README cũ chỉ là danh sách thống kê, không chứa nội dung chương.
 
-## Lưu ý dữ liệu và bảo mật
-- Phiên bản hiện tại dùng `localStorage`; dữ liệu chỉ lưu trong trình duyệt/thiết bị đang sử dụng, không tự đồng bộ giữa thiết bị.
-- Không có đăng nhập thật hoặc phân quyền quản trị server-side. Không dùng cho dữ liệu riêng tư hay mở quyền ghi cho người lạ.
-- Không lưu file video dung lượng lớn vào Git repository. Cần lựa chọn object storage/backend miễn phí phù hợp trước khi bật upload video công khai.
-- Chưa nhập dữ liệu Firestore/Storage từ bản Claude Artifact cũ. Chỉ nhập dữ liệu cũ sau khi có bản export và kiểm tra cấu trúc.
-- Phụ đề tiếng Trung dạng file rời có thể thay bằng track tiếng Việt ở giai đoạn phát video. Chữ Trung đã dính vào hình ảnh cần xử lý video riêng, không thể xóa bằng cách ẩn track phụ đề.
+## Triển khai
+GitHub Actions tự triển khai khi có commit lên nhánh main. Workflow: `.github/workflows/pages.yml`.
 
-## Cấu trúc
-- `index.html`: khung website
-- `styles.css`: giao diện
-- `app.js`: điều hướng, thư viện, trình đọc và quản trị cơ bản
-- `.github/workflows/pages.yml`: tự động deploy GitHub Pages
+## Sao lưu
+Trong website, mở **Quản trị nội dung → Sao lưu dữ liệu → Tải bản sao lưu JSON**. Giữ bản sao lưu ở nơi an toàn trước khi nhập dữ liệu mới hoặc đổi trình duyệt.
