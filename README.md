@@ -21,7 +21,9 @@ https://quynhnhucr010179-maker.github.io/Thu-Cac/
 - Hãy xuất JSON định kỳ. Ảnh bìa được nén nhưng vẫn chiếm dung lượng trình duyệt; nếu bộ nhớ đầy, hãy giảm ảnh hoặc sao lưu.
 - Nhập chương hàng loạt là bộ tách theo mẫu tiêu đề phổ biến, không thể bảo đảm nhận diện đúng mọi website/ngôn ngữ. Cần xem trước và kiểm tra thứ tự.
 - Video từ YouTube/Vimeo phát qua trình nhúng của nhà cung cấp; MP4 cần là URL truy cập trực tiếp. Không tải video từ nền tảng khác về.
-- Phụ đề có thể nhập/chỉnh sửa/xuất SRT/VTT. Bản hiện tại chưa tự nhận diện giọng nói, chưa tự dịch video, chưa tạo giọng đọc và chưa tự căn thời gian phụ đề.
+- Phụ đề có thể nhập/chỉnh sửa/xuất SRT/VTT.
+- OCR phụ đề chữ Trung in sẵn trên hình: lấy mẫu khung hình trong trình duyệt, mặc định quét 30% phía dưới, có lựa chọn giản thể/phồn thể và tần suất 0,5–1,5 giây. Giới hạn video 30 phút/lượt; cần kết nối mạng lần đầu để tải thư viện/ngôn ngữ OCR. Người dùng cần rà soát kết quả OCR.
+- Sau OCR, sao chép danh sách tiếng Trung sang ChatGPT để dịch, dán bản Việt theo thứ tự, ghép và lưu phụ đề song ngữ. Không cần API dịch trả phí; thao tác dịch chưa tự động vì trang tĩnh không có quyền gọi mô hình ChatGPT trong tài khoản người dùng.
 - Chưa có backend, lưu trữ file đám mây, đồng bộ đa thiết bị, tài khoản người dùng hay API dịch.
 - Chưa nhập dữ liệu Firestore/Storage của bản Claude Artifact cũ. Cần bản export thực tế để khôi phục đủ 13 truyện và dữ liệu video cũ; README cũ chỉ là danh sách thống kê, không chứa nội dung chương.
 
