@@ -25,3 +25,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 
 /* In-browser Chinese subtitle OCR */
 #subtitle-editor hr{border:0;border-top:1px solid var(--line);margin:26px 0}#ocr-status{padding:10px 12px;background:#f0ebdf;border-radius:9px;line-height:1.6;min-height:40px}#ocr-language,#ocr-interval{width:100%;max-width:420px;border:1px solid var(--line);background:var(--white);border-radius:10px;padding:12px;color:var(--ink);font:13px inherit}.admin-panel .form-actions{margin:12px 0}
+
+/* Subtitle overlay on the native video player */
+.video-stage{position:relative;width:100%;margin:12px 0}.video-stage .video-player{display:block;margin:0}.video-subtitle-overlay{position:absolute;left:4%;right:4%;bottom:13%;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;text-align:center;color:#fff;font-size:clamp(14px,2.1vw,22px);font-weight:700;line-height:1.4;text-shadow:0 2px 4px #000,0 0 7px #000,1px 1px 2px #000}.video-subtitle-overlay span{max-width:100%;padding:2px 8px;background:#0009;border-radius:4px}
