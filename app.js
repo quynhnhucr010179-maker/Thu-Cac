@@ -94,8 +94,9 @@ async function wireVideoOCR(v){
    let src=v.url||"";
    if(v.fileStored){const blob=await getVideoBlob(v.id);if(!blob)throw new Error("Không tìm thấy video trong bộ nhớ thiết bị.");objectUrl=URL.createObjectURL(blob);src=objectUrl}
    if(!src||/youtube\.com|youtu\.be|vimeo\.com|drive\.google\.com/i.test(src))throw new Error("OCR hiện chỉ xử lý video tải trực tiếp lên THƯ CÁ hoặc URL video trực tiếp MP4/WebM; video nhúng YouTube/Vimeo không hỗ trợ.");
-   video=document.createElement("video");video.muted=true;video.playsInline=true;video.preload="auto";video.crossOrigin="anonymous";video.src=src;
+   video=document.createElement("video");video.muted=true;video.playsInline=true;video.preload="auto";if(objectUrl)video.src=src;else{video.crossOrigin="anonymous";video.src=src}
    await new Promise((resolve,reject)=>{video.onloadedmetadata=resolve;video.onerror=()=>reject(new Error("Trình duyệt không đọc được video này."));video.load()});
+   if(video.readyState<2)await new Promise((resolve,reject)=>{video.addEventListener("loadeddata",resolve,{once:true});video.addEventListener("error",()=>reject(new Error("Không tải được khung hình đầu tiên")), {once:true})});
    if(!Number.isFinite(video.duration)||video.duration<=0)throw new Error("Không xác định được thời lượng video.");
    if(video.duration>1800)throw new Error("Bản OCR hiện giới hạn video tối đa 30 phút để tránh treo trình duyệt. Hãy chia video thành đoạn ngắn.");
    const interval=Number($("#ocr-interval").value)||1,lang=$("#ocr-language").value;
@@ -122,13 +123,13 @@ async function wireVideoOCR(v){
     status.textContent="Đang nhận diện: "+Math.min(i+1,total)+"/"+total+" khung hình · tìm được "+found.length+" dòng.";
    }
    found.forEach(x=>delete x._last);
-   if(found.length){videoDraftSubtitles=found;renderSubtitleRows(found);status.textContent=(ocrCancelled?"Đã dừng. ":"Hoàn tất. ")+ "Nhận diện được "+found.length+" dòng. Hãy rà soát chữ và thời gian trước khi lưu."}
+   if(found.length){videoDraftSubtitles=found;v.subtitles=found;const saved=save();renderSubtitleRows(found);status.textContent=(ocrCancelled?"Đã dừng. ":"Hoàn tất. ")+ "Nhận diện được "+found.length+" dòng."+(saved?" Đã tự lưu bản phụ đề gốc vào video.":" Không lưu được: bộ nhớ trình duyệt có thể đã đầy.")+" Bà có thể mở video để xem chữ Trung ngay, hoặc dịch sang tiếng Việt rồi lưu tiếp."}
    else status.textContent=ocrCancelled?"Đã dừng OCR. Chưa tìm thấy dòng phụ đề.":"Không nhận diện được chữ. Thử chọn đúng ngôn ngữ hoặc dùng video rõ nét hơn.";
   }catch(err){status.textContent="OCR chưa hoàn tất: "+(err.message||"Lỗi không xác định")}
   finally{if(worker)try{await worker.terminate()}catch{}if(objectUrl)URL.revokeObjectURL(objectUrl);run.dataset.running="";run.textContent="Nhận diện phụ đề Trung";ocrCancelled=false}
  };
  $("#copy-ocr-text").onclick=async()=>{const text=readSubtitleRows().map(x=>x.original).join("\n");if(!text.trim()){toast("Chưa có nội dung OCR để sao chép");return}try{await navigator.clipboard.writeText(text);toast("Đã sao chép danh sách phụ đề Trung")}catch{ $("#ocr-translation-paste").value="";toast("Trình duyệt chưa cho phép sao chép tự động")}};
- $("#apply-ocr-translation").onclick=()=>{const lines=$("#ocr-translation-paste").value.replace(/\r/g,"").split("\n").map(x=>x.trim()).filter(Boolean),rows=readSubtitleRows();if(!rows.length){toast("Chưa có phụ đề OCR");return}if(lines.length!==rows.length){toast("Số dòng dịch phải khớp số dòng phụ đề Trung ("+rows.length+").");return}rows.forEach((x,i)=>x.vi=lines[i]);renderSubtitleRows(rows);toast("Đã ghép bản dịch. Nhấn Lưu phụ đề để lưu vào video.")};
+ $("#apply-ocr-translation").onclick=()=>{const lines=$("#ocr-translation-paste").value.replace(/\r/g,"").split("\n").map(x=>x.trim()).filter(Boolean),rows=readSubtitleRows();if(!rows.length){toast("Chưa có phụ đề OCR");return}if(lines.length!==rows.length){toast("Số dòng dịch phải khớp số dòng phụ đề Trung ("+rows.length+").");return}rows.forEach((x,i)=>x.vi=lines[i]);videoDraftSubtitles=rows;v.subtitles=rows;const saved=save();renderSubtitleRows(rows);toast(saved?"Đã ghép và lưu bản dịch vào video.":"Đã ghép bản dịch nhưng lưu thất bại; hãy bấm Lưu phụ đề.")};
 }
 function parseSubtitleText(raw){const blocks=raw.replace(/\r/g,"").replace(/^WEBVTT[^\n]*\n/,"").trim().split(/\n\s*\n/);return blocks.map(b=>{let l=b.split("\n").filter(Boolean),ti=l.findIndex(x=>x.includes("-->"));if(ti<0)return null;let t=l[ti].split("-->");return {start:t[0].trim().replace(".",","),end:t[1].trim().split(/\s+/)[0].replace(".",","),original:l.slice(ti+1).join("\n"),vi:""}}).filter(Boolean)}
 function renderSubtitleRows(list){videoDraftSubtitles=list;$("#subtitle-rows").innerHTML='<h3>'+list.length+' dòng phụ đề</h3>'+list.map((s,i)=>'<div class="subtitle-row"><small>'+esc(s.start)+' → '+esc(s.end)+'</small><div class="field"><label>Bản gốc</label><textarea data-sub-original="'+i+'" rows="2">'+esc(s.original)+'</textarea></div><div class="field"><label>Bản tiếng Việt</label><textarea data-sub-vi="'+i+'" rows="2" placeholder="Nhập bản dịch tiếng Việt...">'+esc(s.vi)+'</textarea></div></div>').join("")}
