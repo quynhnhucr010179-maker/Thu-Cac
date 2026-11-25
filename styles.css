@@ -256,3 +256,66 @@ body{
  .hero-art-wrap{width:94%;right:-10%;height:54%}
  .hero-copy{padding-bottom:220px}
 }
+
+
+/* Reference-match pass: THU CA pastel ocean library */
+:root{--paper:#eaf5ff;--paper2:#dceeff;--ink:#174b83;--muted:#6d91b9;--green:#2475c4;--green2:#d8ecff;--line:#c9e1fa;--white:#f8fcff;--gold:#d9ae63;--shadow:0 14px 38px #2d70ac20}
+body{background:radial-gradient(ellipse at 45% 0%,#fff 0,#eaf5ff 48%,#dceeff 100%);color:#174b83}
+.app-shell{grid-template-columns:230px minmax(0,1fr);background:linear-gradient(120deg,#e5f2ffdd,#f5fbffdd)}
+.sidebar{background:linear-gradient(180deg,#e8f4ffed,#dcecffed);border-right:1px solid #c4def7;padding:22px 16px;box-shadow:8px 0 28px #3479b315}
+.brand{padding:0 6px 32px;color:#155da4}.brand-mark{background:linear-gradient(145deg,#56a9ed,#0756a7);border:2px solid #fff;box-shadow:0 5px 16px #1b66ad40}
+.brand b{letter-spacing:1.5px;color:#155da4}.brand small{color:#5d8cbd}
+.nav-link{color:#326ba6;border-radius:18px;padding:12px 13px;font-weight:600}
+.nav-link span{color:#4e94dc}
+.nav-link:hover,.nav-link.active{background:linear-gradient(110deg,#fff,#dceeff);color:#1266b5;box-shadow:0 5px 16px #377fc51a;border:1px solid #c6e2fc}
+.sidebar-mascot{margin-top:auto;position:relative;min-height:230px;display:flex;align-items:end;justify-content:center;overflow:hidden}
+.sidebar-mascot img{width:100%;max-height:230px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 14px #397db533)}
+.mascot-greeting{position:absolute;z-index:1;top:0;right:0;background:#ffffffed;border:1px solid #c7e1fa;border-radius:22px;padding:9px 12px;text-align:center;color:#276aa9;font-size:12px;line-height:1.35;box-shadow:0 6px 18px #357bb51a}
+.sidebar-bottom{margin-top:8px}
+.sidebar-note{display:none}
+.admin-link{border-color:#c7def4;color:#3976b3}
+.topbar{height:76px;background:#ffffffa8;border:0;border-radius:0 0 24px 24px;padding:0 clamp(18px,2.5vw,42px);gap:16px;box-shadow:0 8px 24px #367cb512}
+.breadcrumb{display:none}
+.ocean-topnav{display:flex;align-items:center;gap:18px;margin-right:auto;padding:10px 18px;border:1px solid #d2e7fa;border-radius:28px;background:#ffffffa8;box-shadow:0 5px 20px #377cb511}
+.ocean-topnav a{color:#286aa9;text-decoration:none;display:flex;align-items:center;gap:7px;padding:8px 5px;font-size:13px;font-weight:650;border-bottom:2px solid transparent}
+.ocean-topnav a:hover,.ocean-topnav a.active{color:#075da9;border-color:#2f92df}
+.search-box{background:#fff;border:1px solid #c8e0f6;box-shadow:0 4px 15px #4a85b313}
+.profile-btn{background:#e6f4ff;border-color:#b9d9f3;color:#276da9}
+.view{width:min(1600px,100%);padding:18px clamp(16px,2.3vw,36px) 56px}
+.hero-ocean{min-height:470px;padding:48px clamp(28px,4vw,60px);border-radius:36px;background:radial-gradient(circle at 80% 25%,#b8e8ff66 0 3px,transparent 6px),radial-gradient(circle at 92% 62%,#e5f7ff99 0 4px,transparent 7px),linear-gradient(120deg,#07549a 0%,#087ac2 48%,#6bbce9 100%);border:2px solid #f5fcff;box-shadow:inset 0 0 0 6px #ffffff20,0 20px 48px #1b65a22c}
+.hero-ocean:before{inset:12px;border:1px solid #e6f7ff99;border-radius:28px}
+.hero-ocean:after{width:520px;height:520px;right:2%;top:-135px;border-color:#d9f5ff66;box-shadow:0 0 0 36px #d9f5ff15,0 0 0 78px #d9f5ff0e,0 0 0 125px #d9f5ff09}
+.hero-copy{max-width:54%;z-index:2}
+.hero-ocean .eyebrow{color:#effaff;font-size:10px;letter-spacing:2px}
+.hero-ocean .hero-kicker{display:none}
+.hero-ocean h1{font:italic clamp(38px,4.5vw,64px)/1.1 Georgia,"Times New Roman",serif;color:#fff;text-shadow:0 3px 18px #063d70a8}
+.hero-ocean p:not(.hero-kicker){color:#e9f6ff;font-size:14px;max-width:420px}
+.hero-ocean .primary-btn{background:linear-gradient(180deg,#fff,#e1f2ff);color:#145b99;border:1px solid white;border-radius:30px;padding:14px 24px;box-shadow:0 8px 22px #063e7066}
+.hero-footnote{color:#e3f4ff;font-size:11px}
+.hero-art-wrap{width:min(54%,700px);height:112%;right:0;bottom:-8%;z-index:1}
+.hero-mermaid{filter:drop-shadow(0 15px 22px #063c6a77)}
+.hero-seal{display:none}
+.hero-watermark{display:none}
+.home-intro-strip{display:none}
+.section-head{margin:26px 0 16px}
+.section-head h2{font:30px Georgia,serif;color:#174d7b}
+.section-head p{color:#6b8eaf}
+.card-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.story-card{background:#f7fbffd9;border:1px solid #c4e0f8;border-radius:20px;padding:8px;box-shadow:0 10px 28px #1d5b8d12}
+.story-card .cover{border-radius:16px;overflow:hidden}
+.story-card h3{color:#174c7b;font-size:15px}
+.story-card p{color:#6d8bab}
+.cover{border-color:#d4eafa;box-shadow:0 8px 22px #1b60931a}
+.footer{color:#7394b2;border-color:#c9e0f4}
+.empty-state,.admin-panel,.modal-card{background:#f8fcff;border-color:#c9e2f7;color:#41688f}
+.primary-btn,.secondary-btn{background:#dff0ff;color:#155f9e;border:1px solid #b8daf5}
+.secondary-btn{background:#eef7ff}
+.tag{background:#e3f2ff;color:#276caa}
+.video-tile{background:#f8fcff;border:1px solid #c9e2f7}
+@media(max-width:980px){.app-shell{grid-template-columns:88px minmax(0,1fr)}.sidebar{width:88px;padding:14px 7px}.sidebar-mascot{display:none}.mascot-greeting{display:none}.hero-copy{max-width:60%}.hero-ocean{min-height:440px}.ocean-topnav{gap:10px}.ocean-topnav a{font-size:10px}}
+@media(max-width:680px){.app-shell{display:block}.sidebar{left:-260px;width:245px;padding:22px 14px}.sidebar.open{left:0}.sidebar-mascot{display:flex}.brand{display:flex;text-align:left;padding:0 6px 25px}.nav-link{flex-direction:row;justify-content:flex-start;font-size:13px;padding:12px}.topbar{height:62px;padding:0 12px}.ocean-topnav{display:none}.search-box{width:min(58vw,280px)}.view{padding:18px 14px 48px}.hero-ocean{min-height:560px;padding:28px 23px;align-items:flex-start;border-radius:24px}.hero-copy{max-width:100%;padding-bottom:235px}.hero-ocean h1{font-size:40px;max-width:440px}.hero-art-wrap{width:86%;height:57%;right:-4%;bottom:-2%}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.story-card{padding:7px;border-radius:15px}}
+
+.hero-art-wrap{width:min(58%,730px);height:118%;right:-1%;bottom:-10%;overflow:visible}
+.hero-mermaid{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 14px 20px #063c6a55)}
+.sidebar-mascot img{width:120%;max-width:none;max-height:260px;object-fit:contain;object-position:center bottom;margin-left:-10%}
+@media(max-width:680px){.hero-art-wrap{width:94%;height:59%;right:-8%;bottom:-2%}.hero-copy{padding-bottom:240px}}
