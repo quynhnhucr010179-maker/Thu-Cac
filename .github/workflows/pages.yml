@@ -25,11 +25,12 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      # Start a fresh workflow run when Pages artifact metadata is delayed; do not rerun an upload job in-place.
       - name: Upload static site
         uses: actions/upload-pages-artifact@v4
         with:
           path: .
+      - name: Wait for Pages artifact metadata
+        run: sleep 20
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
