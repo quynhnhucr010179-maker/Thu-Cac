@@ -28,3 +28,47 @@ button:disabled{opacity:.4;cursor:not-allowed}
 
 /* Subtitle overlay on the native video player */
 .video-stage{position:relative;width:100%;margin:12px 0}.video-stage .video-player{display:block;margin:0}.video-subtitle-overlay{position:absolute;left:4%;right:4%;bottom:13%;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;text-align:center;color:#fff;font-size:clamp(14px,2.1vw,22px);font-weight:700;line-height:1.4;text-shadow:0 2px 4px #000,0 0 7px #000,1px 1px 2px #000}.video-subtitle-overlay span{max-width:100%;padding:2px 8px;background:#0009;border-radius:4px}
+
+/* THƯ CÁ — thư phòng cổ phong giữa biển sâu */
+:root{--paper:#f3eee4;--paper2:#e9e0d0;--ink:#203b36;--muted:#78877f;--green:#24564d;--green2:#dce9df;--gold:#c4a16c;--line:#ded5c5;--white:#fffdf7}
+body{background:radial-gradient(ellipse at 80% 5%,#dce8df 0,transparent 32%),var(--paper)}
+.brand-mark{position:relative;border-radius:15px 15px 15px 5px;background:linear-gradient(145deg,#2d665b,#173f3b);box-shadow:inset 0 0 0 1px #d5c49a;color:#f5ecd9}
+.brand-mark:after{content:"";position:absolute;width:10px;height:10px;right:-4px;bottom:-3px;border-right:2px solid #c8a46e;border-bottom:2px solid #c8a46e;transform:rotate(20deg)}
+.brand b{font-family:Georgia,serif;letter-spacing:3.5px}
+.sidebar{background:linear-gradient(180deg,#eee8dc,#e9e4d8)}
+.nav-link:hover,.nav-link.active{background:#dce8df;color:#24564d;box-shadow:inset 2px 0 #b99762}
+.hero-ocean{min-height:440px;padding:48px clamp(28px,5vw,65px);background:radial-gradient(circle at 82% 25%,#47796b 0,#28584e 38%,#183f3b 100%);border:1px solid #b99b6b;box-shadow:inset 0 0 0 7px #ffffff0a,0 20px 50px #173f3b20;isolation:isolate}
+.hero-ocean:before{content:"";position:absolute;inset:16px;border:1px solid #d9c49a55;border-radius:18px;pointer-events:none;z-index:-1}
+.hero-ocean:after{width:440px;height:440px;right:3%;top:-140px;border-color:#d6c49a33;box-shadow:0 0 0 28px #d6c49a0b,0 0 0 68px #d6c49a08,0 0 0 110px #d6c49a05}
+.hero-copy{position:relative;z-index:2;max-width:520px}
+.hero-kicker{font:11px/1.6 Georgia,serif;letter-spacing:3px;color:#d8c69d!important;margin:16px 0 0!important}
+.hero-ocean h1{font:clamp(38px,5vw,62px)/1.12 Georgia,"Times New Roman",serif;letter-spacing:-1.5px;max-width:540px;margin:13px 0 17px;text-shadow:0 3px 20px #0b2a27aa}
+.hero-ocean p:not(.hero-kicker){max-width:420px;color:#d6e2d8;font-size:14px;line-height:1.9}
+.hero-ocean .primary-btn{margin-top:16px;background:#e9d9b9;color:#29483f;border:1px solid #f6e9cd;box-shadow:0 7px 20px #0c2b2755}
+.hero-ocean .primary-btn:hover{transform:translateY(-2px);background:#f5e8ce}
+.hero-footnote{margin-top:27px;color:#c4d4c8;font-size:10px;letter-spacing:.5px;max-width:400px}
+.hero-footnote span{color:#e1c38b;font-size:17px;margin-right:7px}
+.hero-art-wrap{position:absolute;right:2%;bottom:-5%;width:min(48%,520px);height:108%;display:flex;align-items:flex-end;justify-content:center;z-index:1;pointer-events:none}
+.hero-mermaid{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 16px 24px #071e1d88)}
+.hero-seal{position:absolute;right:4%;top:13%;width:66px;height:66px;border:1px solid #e1c38b;border-radius:50%;display:grid;place-content:center;text-align:center;color:#e9d9b9;font:20px/1.05 Georgia,serif;background:#1c494480;box-shadow:0 0 0 5px #e1c38b18;transform:rotate(8deg)}
+.hero-seal small{font:7px/1.5 system-ui;letter-spacing:1px}
+.hero-watermark{position:absolute;right:5%;bottom:5%;font:italic 12px Georgia,serif;letter-spacing:5px;color:#f4e7c022}
+.home-intro-strip{display:flex;justify-content:space-between;gap:14px;padding:14px 5px 0;color:#9a8768;font:9px/1.4 Georgia,serif;letter-spacing:2px}
+.section-head h2{font:30px Georgia,serif;color:#29483f}
+.story-card{position:relative}
+.cover{border:1px solid #c8ad7d;background:linear-gradient(145deg,#c4d6c5,#557f73);box-shadow:0 10px 28px #213e3520}
+.cover:before{inset:9px;border:1px solid #f2e4c6a8;border-radius:9px}
+.cover:after{content:"✧  ❧  ✧";position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#fff1d2a8;font:14px Georgia,serif;letter-spacing:4px}
+.cover span{font-family:Georgia,serif;text-shadow:0 2px 12px #1a3936a8}
+.cover.tone-2{background:linear-gradient(145deg,#d9bda8,#8c6962)}
+.cover.tone-3{background:linear-gradient(145deg,#c8d5bb,#58776a)}
+.cover.tone-4{background:linear-gradient(145deg,#c5c0d5,#625c7e)}
+.story-card h3{font-family:Georgia,"Times New Roman",serif}
+.home-quote{position:relative;margin:54px auto 12px;padding:30px 24px;text-align:center;max-width:760px;border-top:1px solid #c8ad7d;border-bottom:1px solid #c8ad7d}
+.home-quote:before,.home-quote:after{content:"✧";position:absolute;top:-9px;left:calc(50% - 8px);padding:0 8px;background:var(--paper);color:#b99663}
+.home-quote p{font:italic 22px/1.6 Georgia,serif;color:#46665b;margin:0 0 8px}
+.home-quote small{font-size:9px;letter-spacing:2px;color:#9a8768}
+.quote-mark{display:block;font:46px Georgia,serif;color:#b99663;line-height:.8}
+.footer{color:#948c7d}
+@media(max-width:760px){.hero-ocean{min-height:560px;align-items:flex-start;padding:32px 25px}.hero-copy{max-width:100%}.hero-ocean h1{font-size:40px;max-width:420px}.hero-art-wrap{width:78%;height:58%;right:-4%;bottom:-2%;opacity:.92}.hero-seal{width:52px;height:52px;font-size:16px;right:12%;top:9%}.hero-footnote{max-width:260px}.home-intro-strip{font-size:8px;letter-spacing:1px;flex-wrap:wrap}.home-intro-strip span:last-child{display:none}}
+@media(max-width:420px){.hero-ocean h1{font-size:35px}.hero-art-wrap{width:90%;right:-12%;height:54%}.hero-copy{padding-bottom:220px}.hero-footnote{max-width:230px}}
