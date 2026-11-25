@@ -895,3 +895,70 @@ radial-gradient(circle at 8% 20%,#ffffff 0 2px,transparent 3px),radial-gradient(
   }
   .hero-ocean p:not(.hero-kicker){max-width:270px!important}
 }
+
+
+/* PHONE LAYOUT: compact hero so the library content appears without a full-screen banner */
+@media screen and (max-width: 760px){
+  .view{
+    padding:14px 14px 92px!important;
+  }
+  .hero-ocean{
+    box-sizing:border-box!important;
+    height:clamp(285px, 39svh, 335px)!important;
+    min-height:0!important;
+    max-height:335px!important;
+    padding:22px 18px!important;
+    margin:0 0 18px!important;
+    border-radius:23px!important;
+    overflow:hidden!important;
+    background-size:cover!important;
+    background-position:76% center!important;
+  }
+  .hero-ocean:before{inset:8px!important;border-radius:17px!important}
+  .hero-ocean .hero-copy{
+    width:100%!important;
+    max-width:100%!important;
+    padding:0!important;
+    margin:0!important;
+  }
+  .hero-ocean .eyebrow{
+    font-size:8px!important;
+    letter-spacing:1.6px!important;
+    margin:0 0 9px!important;
+  }
+  .hero-ocean .hero-kicker{display:none!important}
+  .hero-ocean h1{
+    font-size:clamp(25px,6.8vw,30px)!important;
+    line-height:1.08!important;
+    letter-spacing:-.7px!important;
+    max-width:300px!important;
+    margin:0 0 11px!important;
+  }
+  .hero-ocean p:not(.hero-kicker){
+    font-size:11px!important;
+    line-height:1.4!important;
+    max-width:260px!important;
+    margin:0 0 12px!important;
+  }
+  .hero-ocean .primary-btn{
+    margin-top:4px!important;
+    min-height:40px!important;
+    padding:10px 17px!important;
+    font-size:12px!important;
+  }
+  .hero-ocean .hero-footnote{display:none!important}
+  .hero-ocean .hero-art-wrap{display:none!important}
+  .home-intro-strip{display:none!important}
+  .section-head{margin-top:18px!important}
+}
+@media screen and (max-width: 420px){
+  .view{padding-left:12px!important;padding-right:12px!important}
+  .hero-ocean{
+    height:clamp(275px, 37svh, 315px)!important;
+    max-height:315px!important;
+    padding:20px 16px!important;
+    background-position:78% center!important;
+  }
+  .hero-ocean h1{font-size:clamp(24px,6.5vw,27px)!important;max-width:275px!important}
+  .hero-ocean p:not(.hero-kicker){max-width:235px!important;font-size:10.5px!important}
+}
