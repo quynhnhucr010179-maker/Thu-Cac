@@ -25,7 +25,7 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      # Use a fresh deployment run; GitHub Pages artifact metadata can lag behind the upload.
+      # Start a fresh workflow run when Pages artifact metadata is delayed; do not rerun an upload job in-place.
       - name: Upload static site
         uses: actions/upload-pages-artifact@v4
         with:
