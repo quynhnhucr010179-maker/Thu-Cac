@@ -25,6 +25,7 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
+      # Start a fresh workflow run for each deployment; do not re-run this job after an artifact upload.
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
