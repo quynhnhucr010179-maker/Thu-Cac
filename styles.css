@@ -743,3 +743,51 @@ radial-gradient(circle at 8% 20%,#ffffff 0 2px,transparent 3px),radial-gradient(
  .hero-ocean{min-height:470px;background-position:65% center}
  .hero-copy{padding-bottom:0}
 }
+
+
+/* FINAL HERO FIX: real uploaded ocean image + visible mermaid artwork */
+.hero-ocean{
+  position:relative;
+  overflow:hidden;
+  background-color:#075477!important;
+  background-image:linear-gradient(90deg,rgba(3,43,72,.66) 0%,rgba(3,57,85,.34) 43%,rgba(3,57,85,.04) 78%),url("./assets/00be7ff5-1b49-4201-964e-f6bba49b239d.png")!important;
+  background-size:cover!important;
+  background-position:center 48%!important;
+}
+.hero-ocean:after{display:none!important}
+.hero-art-wrap{
+  display:flex!important;
+  position:absolute!important;
+  right:1%!important;
+  bottom:-4%!important;
+  width:min(47%,560px)!important;
+  height:108%!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  z-index:2!important;
+  opacity:1!important;
+}
+.hero-mermaid{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center bottom!important;
+}
+.hero-copy{max-width:50%!important;position:relative;z-index:3}
+@media(max-width:760px){
+ .hero-ocean{
+  min-height:530px!important;
+  background-image:linear-gradient(180deg,rgba(3,45,73,.64) 0%,rgba(3,58,86,.25) 58%,rgba(3,58,86,.08) 100%),url("./assets/00be7ff5-1b49-4201-964e-f6bba49b239d.png")!important;
+  background-size:cover!important;
+  background-position:66% center!important;
+ }
+ .hero-copy{max-width:100%!important;width:100%!important;padding-bottom:220px!important}
+ .hero-art-wrap{width:75%!important;height:57%!important;right:-5%!important;bottom:-2%!important}
+ .hero-ocean h1{max-width:340px}
+}
+@media(max-width:420px){
+ .hero-ocean{min-height:535px!important;background-position:65% center!important}
+ .hero-copy{padding-bottom:215px!important}
+ .hero-art-wrap{width:88%!important;height:53%!important;right:-10%!important}
+}
