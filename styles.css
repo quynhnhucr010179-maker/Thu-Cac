@@ -432,3 +432,78 @@ button,.nav-link,.primary-btn,.secondary-btn{min-height:40px}
  html{scroll-behavior:auto}
  .sidebar{transition:none}
 }
+
+
+/* Mobile-first compact hero correction: avoid oversized stacked banner */
+@media(max-width:760px){
+ .hero-ocean{
+   position:relative!important;
+   min-height:0!important;
+   height:clamp(390px,112vw,470px)!important;
+   padding:24px 18px 18px!important;
+   display:block!important;
+   overflow:hidden!important;
+   border-radius:22px!important;
+ }
+ .hero-copy{
+   position:relative!important;
+   z-index:3!important;
+   width:62%!important;
+   max-width:62%!important;
+   padding:0!important;
+   margin:0!important;
+ }
+ .hero-ocean h1{
+   font-size:clamp(27px,7vw,35px)!important;
+   line-height:1.08!important;
+   max-width:100%!important;
+   margin:12px 0 14px!important;
+ }
+ .hero-ocean p:not(.hero-kicker){
+   font-size:clamp(11px,3.2vw,14px)!important;
+   line-height:1.55!important;
+   max-width:100%!important;
+ }
+ .hero-ocean .primary-btn,.hero-ocean .secondary-btn{
+   min-height:42px!important;
+   padding:10px 15px!important;
+   font-size:12px!important;
+   margin-top:12px!important;
+ }
+ .hero-art-wrap{
+   position:absolute!important;
+   z-index:2!important;
+   width:68%!important;
+   height:58%!important;
+   max-width:390px!important;
+   right:-5%!important;
+   bottom:-2%!important;
+   top:auto!important;
+   pointer-events:none!important;
+ }
+ .hero-mermaid{
+   width:100%!important;
+   height:100%!important;
+   object-fit:contain!important;
+   object-position:right bottom!important;
+ }
+ .hero-footnote{
+   position:absolute!important;
+   z-index:4!important;
+   left:18px!important;
+   bottom:16px!important;
+   width:54%!important;
+   max-width:54%!important;
+   font-size:9px!important;
+   line-height:1.35!important;
+ }
+ .section-head{margin-top:24px!important}
+ .section-head h2{font-size:clamp(23px,6vw,29px)!important}
+}
+@media(max-width:420px){
+ .hero-ocean{height:410px!important;padding:19px 14px 14px!important}
+ .hero-copy{width:65%!important;max-width:65%!important}
+ .hero-ocean h1{font-size:28px!important}
+ .hero-art-wrap{width:72%!important;height:55%!important;right:-8%!important}
+ .hero-footnote{left:14px!important;bottom:13px!important;width:55%!important}
+}
