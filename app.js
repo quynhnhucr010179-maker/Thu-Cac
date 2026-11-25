@@ -42,7 +42,7 @@ function wire(){
  document.querySelectorAll("[data-reader-chapter]").forEach(x=>x.onclick=()=>{activeChapter=Number(x.dataset.readerChapter);render()});
  $("#story-filter")?.addEventListener("input",filterStories);$("#genre-filter")?.addEventListener("change",filterStories);$("#story-sort")?.addEventListener("change",filterStories);
  document.querySelectorAll("[data-admin-tab]").forEach(x=>x.onclick=()=>{$("#admin-content").innerHTML=x.dataset.adminTab==="stories"?storyAdmin():x.dataset.adminTab==="translation"?translationAdmin():x.dataset.adminTab==="videos"?videoAdmin():backupAdmin();wireAdmin()});
- document.querySelectorAll("[data-play-video]").forEach(x=>x.onclick=()=>playVideo(x.dataset.playVideo));
+ document.querySelectorAll("[data-play-video]").forEach(x=>{if(!x.closest("#video-feed"))x.onclick=()=>playVideo(x.dataset.playVideo)});
  document.querySelectorAll("[data-cinema-tab]").forEach(x=>{if(!x.closest("#video-feed"))x.onclick=()=>switchCinemaTab(x.dataset.cinemaTab)});
  document.querySelectorAll("[data-open-feed]").forEach(x=>x.onclick=()=>{const panel=$("#cinema-feed-panel");if(panel){panel.innerHTML=videoFeed(x.dataset.openFeed);switchCinemaTab("feed");wireVideoFeed(x.dataset.openFeed)}});
  $("#video-search")?.addEventListener("input",filterVideoLibrary);$("#video-kind-filter")?.addEventListener("change",filterVideoLibrary);
