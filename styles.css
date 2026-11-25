@@ -791,3 +791,21 @@ radial-gradient(circle at 8% 20%,#ffffff 0 2px,transparent 3px),radial-gradient(
  .hero-copy{padding-bottom:215px!important}
  .hero-art-wrap{width:88%!important;height:53%!important;right:-10%!important}
 }
+
+
+/* Keep the ocean banner background; remove the old mermaid/fish artwork from the hero */
+.hero-ocean .hero-art-wrap,
+.hero-ocean .hero-mermaid{
+  display:none!important;
+  visibility:hidden!important;
+}
+.hero-ocean .hero-copy{
+  max-width:58%!important;
+}
+@media(max-width:760px){
+  .hero-ocean .hero-copy{
+    max-width:100%!important;
+    width:100%!important;
+    padding-bottom:0!important;
+  }
+}
