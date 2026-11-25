@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMid slice">
+<defs>
+ <linearGradient id="sea" x2="1" y2="1"><stop stop-color="#064a9d"/><stop offset=".48" stop-color="#087fc3"/><stop offset="1" stop-color="#62c9e9"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#e8fbff" stop-opacity=".8"/><stop offset="1" stop-color="#8be8ff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="castle" x2="0" y2="1"><stop stop-color="#d9f5ff"/><stop offset=".55" stop-color="#75c9ef"/><stop offset="1" stop-color="#2877b6"/></linearGradient>
+ <linearGradient id="coral" x2="0" y2="1"><stop stop-color="#f5b9e5"/><stop offset="1" stop-color="#a65fbe"/></linearGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1600" height="600" fill="url(#sea)"/>
+<ellipse cx="900" cy="15" rx="520" ry="240" fill="url(#glow)" filter="url(#blur)"/>
+<g opacity=".24" stroke="#d9f7ff" stroke-width="5"><path d="M500 0L760 600M650 0L830 600M820 0L900 600M980 0L990 600M1150 0L1080 600"/></g>
+<g fill="#bdeeff" opacity=".8"><circle cx="130" cy="110" r="8"/><circle cx="260" cy="330" r="5"/><circle cx="440" cy="80" r="11"/><circle cx="740" cy="160" r="6"/><circle cx="1030" cy="70" r="9"/><circle cx="1450" cy="120" r="13"/><circle cx="1520" cy="360" r="6"/><circle cx="900" cy="480" r="8"/><circle cx="570" cy="520" r="4"/></g>
+<g fill="none" stroke="#d7f6ff" stroke-width="3" opacity=".8"><circle cx="130" cy="110" r="18"/><circle cx="440" cy="80" r="24"/><circle cx="1030" cy="70" r="20"/><circle cx="1450" cy="120" r="28"/><circle cx="900" cy="480" r="17"/></g>
+<!-- distant underwater palace -->
+<g transform="translate(770 125)" opacity=".8" fill="url(#castle)" stroke="#d9f7ff" stroke-width="4">
+ <path d="M0 320V170h55V90l35-55 35 55v230h45V140h40V65l30-48 30 48v255h55V170h50V90l30-52 30 52v230h45V205h55v115z"/>
+ <path d="M-20 320h540v30H-20z" fill="#8ad9f5"/>
+ <g fill="#fff4d0" stroke="#fff"><path d="M75 205h24v50H75zM215 180h25v55h-25zM375 205h25v50h-25z"/></g>
+</g>
+<g fill="none" stroke="url(#coral)" stroke-width="12" stroke-linecap="round" opacity=".9"><path d="M0 600q35-100 20-180m-20 120q70-30 85-95m-60 100q-20-75-60-95m160 150q0-80 55-120m-20 100q70-35 80-100M1450 600q-10-100 35-160m-10 100q70-20 90-80m-70 95q-15-70-55-100m160 145q5-90 65-125"/></g>
+<g fill="#f7c9ed" opacity=".9"><circle cx="62" cy="425" r="15"/><circle cx="108" cy="385" r="10"/><circle cx="1485" cy="450" r="14"/><circle cx="1540" cy="400" r="10"/></g>
+<path d="M0 545Q250 500 500 555T1000 545T1600 530V600H0Z" fill="#c8f5ff" opacity=".13"/>
+</svg>
