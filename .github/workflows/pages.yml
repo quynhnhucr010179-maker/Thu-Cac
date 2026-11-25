@@ -27,7 +27,7 @@ jobs:
           enablement: true
       # Use a fresh deployment run; GitHub Pages artifact metadata can lag behind the upload.
       - name: Upload static site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .
       - name: Deploy
