@@ -809,3 +809,26 @@ radial-gradient(circle at 8% 20%,#ffffff 0 2px,transparent 3px),radial-gradient(
     padding-bottom:0!important;
   }
 }
+
+
+/* Remove the decorative mascot illustration from the hero only.
+   Keep the newly uploaded ocean banner background unchanged. */
+.hero-ocean .hero-art-wrap,
+.hero-ocean .hero-mermaid,
+.hero-ocean .hero-seal{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+.hero-ocean .hero-copy{
+  position:relative!important;
+  z-index:3!important;
+  max-width:58%!important;
+}
+@media(max-width:760px){
+  .hero-ocean .hero-copy{
+    max-width:100%!important;
+    width:100%!important;
+    padding-bottom:0!important;
+  }
+}
