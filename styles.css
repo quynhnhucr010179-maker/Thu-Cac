@@ -1371,3 +1371,41 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
  .view{padding-left:10px;padding-right:10px}
  .detail-layout{grid-template-columns:88px minmax(0,1fr);gap:11px}
 }
+
+
+
+/* Restore the approved THU CA ocean-mermaid hero artwork */
+.hero-ocean{
+ position:relative!important;isolation:isolate;overflow:hidden;
+ min-height:290px!important;
+ background:
+   linear-gradient(90deg,rgba(224,241,249,.96) 0%,rgba(225,241,250,.90) 43%,rgba(225,241,250,.12) 76%),
+   url("./assets/ocean-banner.svg") center/cover no-repeat!important;
+ border:1px solid rgba(159,204,224,.45);
+}
+.hero-ocean:before{
+ content:"";display:block!important;position:absolute;inset:0;z-index:0;
+ background:linear-gradient(90deg,rgba(226,242,250,.65),transparent 65%);
+ pointer-events:none;
+}
+.hero-ocean:after{
+ content:"";display:block!important;position:absolute;z-index:1;
+ right:2.5%;bottom:-9%;width:min(44%,510px);height:112%;
+ background:url("./assets/mermaid-reference.svg") center bottom/contain no-repeat;
+ filter:drop-shadow(0 12px 18px rgba(34,103,140,.12));
+ pointer-events:none;
+}
+.hero-ocean .hero-copy{position:relative;z-index:2;max-width:54%!important}
+.hero-ocean h1{color:#214d6b!important;text-shadow:0 1px 0 rgba(255,255,255,.45)}
+.hero-ocean p{color:#557b91!important}
+.hero-ocean .eyebrow{color:#5288a2!important}
+.hero-ocean .primary-btn{background:#5d9fc1!important;color:white!important;box-shadow:0 5px 14px rgba(48,119,157,.18)}
+@media(max-width:760px){
+ .hero-ocean{min-height:245px!important;padding:20px 16px!important;background-position:center!important}
+ .hero-ocean:after{right:-3%;bottom:-2%;width:54%;height:86%}
+ .hero-ocean .hero-copy{max-width:67%!important}
+ .hero-ocean h1{font-size:clamp(20px,6vw,27px)!important}
+ .hero-ocean p{font-size:10px!important;max-width:95%}
+ .hero-ocean .eyebrow{font-size:8px!important;letter-spacing:1px}
+ .hero-ocean .primary-btn{font-size:10px!important;padding:9px 12px!important}
+}
