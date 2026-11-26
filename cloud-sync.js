@@ -33,7 +33,7 @@
  }
  async function init(){
   if(!ready){render();return}
-  client=window.supabase.createClient(cfg.url,cfg.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   const {data,error}=await client.auth.getSession();if(error)throw error;
   user=data.session?.user||null;render();
   if(user)await syncNow();
