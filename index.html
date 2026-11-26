@@ -3,56 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#dcecff">
-  <meta name="description" content="THƯ CÁ — Thư phòng cổ phong giữa biển sâu, nơi lưu giữ những câu chuyện và giấc mơ.">
-  <title>THƯ CÁ — Thư phòng giữa biển sâu</title>
+  <meta name="theme-color" content="#edf6e9">
+  <meta name="description" content="THƯ CÁ — Không gian đọc truyện, xem video và lưu giữ những câu chuyện yêu thích.">
+  <title>THƯ CÁ — Thư viện truyện & video</title>
   <link rel="icon" type="image/svg+xml" href="./assets/thu-ca-mark.svg">
-  <link rel="stylesheet" href="./styles.css?v=20261125-reader-integration-v1">
+  <link rel="stylesheet" href="./styles.css?v=20261126-reading-app-redesign">
 </head>
 <body>
+  <aside id="sidebar" hidden><button id="open-admin" type="button">Quản trị</button></aside>
   <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#home" aria-label="THƯ CÁ trang chủ"><span class="brand-mark">Th</span><span><b>THƯ CÁ</b><small>READ · WATCH · RELAX</small></span></a>
-      <nav class="main-nav" aria-label="Điều hướng chính">
-        <a href="#home" data-nav="home" class="nav-link active"><span>⌂</span> Trang chủ</a>
-        <a href="#stories" data-nav="stories" class="nav-link"><span>✧</span> Khám phá</a>
-        <a href="#videos" data-nav="videos" class="nav-link"><span>▷</span> Rạp phim</a>
-        <a href="#admin" data-nav="admin" data-admin-tab="translation" class="nav-link"><span>文</span> Dịch truyện</a>
-        <a href="#stories" data-nav="stories" class="nav-link"><span>▤</span> Nguồn truyện</a>
-        <a href="#videos" data-nav="videos" class="nav-link"><span>♧</span> Linh vật biển cả</a><a href="#admin" data-nav="admin" class="nav-link"><span>⚙</span> Cài đặt</a>
-      </nav>
-      <div class="sidebar-mascot"><div class="mascot-greeting">Chào mừng<br>đến với THƯ CÁ 💗</div><img src="./assets/t%E1%BA%A3i%20xu%E1%BB%91ng%20(1).png" alt="Linh vật THƯ CÁ"></div><div class="sidebar-bottom">
-        <div class="sidebar-note"><span class="note-dot"></span><span>Góc nhỏ dành cho người mê truyện.</span></div>
-        <button class="nav-link admin-link" id="open-admin"><span>⚙</span> Quản trị nội dung</button>
-      </div>
-    </aside>
     <main class="main-area">
       <header class="topbar">
-        <button class="icon-btn mobile-menu" id="mobile-menu" aria-label="Mở menu">☰</button>
-        <a class="mobile-brand" href="#home"><span class="mobile-brand-mark">Th</span><span><b>THƯ CÁ</b><small>READ · WATCH · RELAX</small></span></a>
-        <div class="breadcrumb" id="breadcrumb">Không gian của bạn <span>/</span> Khám phá</div>
-        <nav class="ocean-topnav" aria-label="Điều hướng nhanh">
-          <a href="#home" data-go="home" class="active">⌂ <span>Trang chủ</span></a>
-          <a href="#stories" data-go="stories">✧ <span>Khám phá</span></a>
-          <a href="#videos" data-go="videos">▷ <span>Rạp phim</span></a>
-          <a href="#admin" data-go="admin" data-admin-tab="translation">文 <span>Dịch truyện</span></a>
-          <a href="#stories" data-go="stories">▤ <span>Nguồn truyện</span></a>
+        <button class="icon-btn mobile-menu" id="mobile-menu" aria-label="Mở menu" hidden>☰</button>
+        <a class="mobile-brand" href="#home" data-go="home" aria-label="THƯ CÁ trang chủ"><span class="mobile-brand-mark">Thư</span><span><b>THƯ CÁ</b><small>READ · WATCH · RELAX</small></span></a>
+        <a class="desktop-brand" href="#home" data-go="home"><span class="desktop-brand-mark">Thư</span><span><b>THƯ CÁ</b><small>READ · WATCH · RELAX</small></span></a>
+        <nav class="ocean-topnav" aria-label="Điều hướng chính">
+          <a href="#home" data-go="home" class="active">Khám phá</a>
+          <a href="#stories" data-go="stories">Truyện</a>
+          <a href="#videos" data-go="videos">Video</a>
+          <a href="#shelf" data-go="shelf">Tủ sách</a>
+          <a href="#admin" data-go="admin" data-admin-tab="translation">Bàn dịch</a>
         </nav>
         <div class="top-actions">
           <label class="search-box"><span>⌕</span><input id="global-search" type="search" placeholder="Tìm truyện, tác giả..." aria-label="Tìm kiếm"></label>
-          <button class="profile-btn" id="profile-btn" title="Tài khoản">♡</button>
+          <button class="profile-btn" id="profile-btn" title="Tài khoản" aria-label="Tài khoản">♡</button>
         </div>
       </header>
+      <div class="breadcrumb" id="breadcrumb">THƯ VIỆN <span>/</span> KHÁM PHÁ</div>
       <div id="view" class="view" aria-live="polite"></div>
-      <footer class="footer"><span>THƯ CÁ</span><span>Một góc nhỏ để đọc và thưởng thức.</span><span id="storage-indicator">Chế độ lưu trên thiết bị</span></footer>
+      <footer class="footer"><span>THƯ CÁ</span><span>Một góc nhỏ để đọc và thưởng thức.</span><span id="storage-indicator">Dữ liệu lưu trên thiết bị này</span></footer>
     </main>
   </div>
-  <nav class="mobile-bottom-nav" aria-label="Điều hướng điện thoại">
-    <a href="#home" data-nav="home" class="active"><span>⌂</span><small>Trang chủ</small></a>
-    <a href="#stories" data-nav="stories"><span>✧</span><small>Khám phá</small></a>
-    <a href="#videos" data-nav="videos"><span>▣</span><small>Rạp phim</small></a>
+  <nav class="mobile-bottom-nav" aria-label="Điều hướng">
+    <a href="#home" data-nav="home" class="active"><span>⌂</span><small>Khám phá</small></a>
+    <a href="#stories" data-nav="stories"><span>▤</span><small>Truyện</small></a>
+    <a href="#videos" data-nav="videos"><span>▷</span><small>Video</small></a>
+    <a href="#shelf" data-nav="shelf"><span>♡</span><small>Tủ sách</small></a>
     <a href="#admin" data-nav="admin" data-admin-tab="translation"><span>文</span><small>Dịch truyện</small></a>
-    <a href="#shelf" data-nav="shelf"><span>♡</span><small>Cá nhân</small></a>
   </nav>
   <div id="modal-root"></div>
   <div id="toast-root" class="toast-root" aria-live="polite"></div>
