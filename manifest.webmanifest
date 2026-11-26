@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "THƯ CÁ — Thư viện truyện & video",
+  "short_name": "THƯ CÁ",
+  "description": "Không gian đọc truyện, xem video và lưu giữ những câu chuyện yêu thích.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3eee4",
+  "theme_color": "#edf6e9",
+  "icons": [
+    {
+      "src": "./assets/thu-ca-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
