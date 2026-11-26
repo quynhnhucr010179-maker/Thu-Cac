@@ -17,7 +17,7 @@ Website thư viện truyện và video, triển khai trên GitHub Pages theo hư
 https://quynhnhucr010179-maker.github.io/Thu-Cac/
 
 ## Dữ liệu và giới hạn quan trọng
-- Dữ liệu vẫn được lưu cục bộ để ứng dụng hoạt động khi chưa đăng nhập. Phần đồng bộ đám mây Supabase đã được tích hợp trong mã nguồn nhưng chỉ hoạt động sau khi cấu hình dự án Supabase, tạo bảng theo `supabase/schema.sql` và điền URL + publishable/anon key vào `supabase-config.js`.
+- Dữ liệu vẫn được lưu cục bộ để ứng dụng hoạt động khi chưa đăng nhập. Phần đồng bộ đám mây Supabase đã được tích hợp trong mã nguồn nhưng chỉ hoạt động sau khi cấu hình dự án Supabase, tạo bảng theo `supabase/schema.sql` và điền Project URL + publishable key vào `supabase-config.js`.
 - Khi đồng bộ được bật, truyện, chương, ảnh bìa, metadata video và phụ đề sẽ đồng bộ theo tài khoản. Tệp video tải trực tiếp lên thiết bị vẫn nằm trong IndexedDB của từng thiết bị và không được tải lên đám mây.
 - Hãy xuất JSON định kỳ. Ảnh bìa được nén nhưng vẫn chiếm dung lượng trình duyệt; nếu bộ nhớ đầy, hãy giảm ảnh hoặc sao lưu.
 - Nhập chương hàng loạt là bộ tách theo mẫu tiêu đề phổ biến, không thể bảo đảm nhận diện đúng mọi website/ngôn ngữ. Cần xem trước và kiểm tra thứ tự.
@@ -33,3 +33,13 @@ GitHub Actions tự triển khai khi có commit lên nhánh main. Workflow: `.gi
 
 ## Sao lưu
 Trong website, mở **Quản trị nội dung → Sao lưu dữ liệu → Tải bản sao lưu JSON**. Giữ bản sao lưu ở nơi an toàn trước khi nhập dữ liệu mới hoặc đổi trình duyệt.
+
+
+## Bật đồng bộ lần đầu (cần chủ dự án thực hiện)
+1. Tạo một project Supabase ở gói Free: https://supabase.com/dashboard. Gói Free hiện có $0/tháng, 500 MB database, nhưng project có thể tạm dừng sau 1 tuần không hoạt động; giới hạn và điều kiện có thể thay đổi theo nhà cung cấp.
+2. Trong Supabase, mở SQL Editor, dán và chạy toàn bộ nội dung file `supabase/schema.sql`.
+3. Vào Project Settings → API Keys (hoặc nút Connect), sao chép **Project URL** và **Publishable key** (bắt đầu bằng `sb_publishable_`). Không dùng Secret key hoặc service_role key trong website.
+4. Điền hai giá trị đó vào `supabase-config.js`, cập nhật GitHub Pages, rồi vào THƯ CÁ → Quản trị nội dung → Sao lưu dữ liệu → Đồng bộ đám mây.
+5. Tạo tài khoản bằng email/mật khẩu trong mục đồng bộ. Đăng nhập đúng tài khoản đó trên cả điện thoại và máy tính. Trước lần đồng bộ đầu tiên, hãy tải JSON dự phòng trên cả thiết bị đang có truyện.
+
+Lưu ý: Supabase Free có thể tự tạm dừng project sau một tuần không hoạt động. Phần đồng bộ này chỉ đồng bộ dữ liệu thư viện dạng JSON; video tải tệp trực tiếp vẫn nằm riêng trên thiết bị. Không gửi mật khẩu Supabase hoặc Secret/service_role key cho bất kỳ ai.
