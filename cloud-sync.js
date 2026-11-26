@@ -2,7 +2,7 @@
    No credentials are embedded in this repository. Configure supabase-config.js. */
 (()=>{
  const cfg=window.THUCAS_SUPABASE_CONFIG||{};
- const ready=!!(cfg.url&&cfg.anonKey&&window.supabase?.createClient);
+ const ready=!!(cfg.url&&cfg.publishableKey&&window.supabase?.createClient);
  let client=null,user=null,pushTimer=null,applyingRemote=false;
  const $=s=>document.querySelector(s);
  const status=msg=>{const el=$("#cloud-sync-status");if(el)el.textContent=msg};
