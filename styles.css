@@ -1478,3 +1478,7 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 #cloud-sync-panel .field{margin:10px 0}
 #cloud-sync-panel input{width:100%;min-height:42px;border:1px solid #d7e4dc;border-radius:10px;padding:10px 12px;background:#fff}
 #cloud-sync-status{margin-top:12px;white-space:normal;overflow-wrap:anywhere}
+
+
+/* Continue reading shelf on the home page */
+.continue-reading{margin:28px 0 34px}.continue-reading-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px}.continue-reading-card{display:flex;gap:13px;align-items:center;padding:13px;background:var(--white);border:1px solid var(--line);border-radius:15px;min-width:0}.continue-reading-card .cover{width:64px;min-width:64px;height:88px;border-radius:8px;overflow:hidden}.continue-reading-copy{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}.continue-reading-copy b{font-family:Georgia,serif;font-size:14px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.continue-reading-copy span,.continue-reading-copy small{font-size:11px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.continue-reading-copy .secondary-btn{margin-top:4px;padding:7px 11px;font-size:11px}
