@@ -17,14 +17,15 @@ Website thư viện truyện và video, triển khai trên GitHub Pages theo hư
 https://quynhnhucr010179-maker.github.io/Thu-Cac/
 
 ## Dữ liệu và giới hạn quan trọng
-- Dữ liệu được lưu trong localStorage của trình duyệt đang sử dụng. Không tự đồng bộ giữa điện thoại và máy tính, cũng không có đăng nhập hoặc phân quyền quản trị thật.
+- Dữ liệu vẫn được lưu cục bộ để ứng dụng hoạt động khi chưa đăng nhập. Phần đồng bộ đám mây Supabase đã được tích hợp trong mã nguồn nhưng chỉ hoạt động sau khi cấu hình dự án Supabase, tạo bảng theo `supabase/schema.sql` và điền URL + publishable/anon key vào `supabase-config.js`.
+- Khi đồng bộ được bật, truyện, chương, ảnh bìa, metadata video và phụ đề sẽ đồng bộ theo tài khoản. Tệp video tải trực tiếp lên thiết bị vẫn nằm trong IndexedDB của từng thiết bị và không được tải lên đám mây.
 - Hãy xuất JSON định kỳ. Ảnh bìa được nén nhưng vẫn chiếm dung lượng trình duyệt; nếu bộ nhớ đầy, hãy giảm ảnh hoặc sao lưu.
 - Nhập chương hàng loạt là bộ tách theo mẫu tiêu đề phổ biến, không thể bảo đảm nhận diện đúng mọi website/ngôn ngữ. Cần xem trước và kiểm tra thứ tự.
 - Video từ YouTube/Vimeo phát qua trình nhúng của nhà cung cấp; MP4 cần là URL truy cập trực tiếp. Không tải video từ nền tảng khác về.
 - Phụ đề có thể nhập/chỉnh sửa/xuất SRT/VTT.
 - OCR phụ đề chữ Trung in sẵn trên hình: lấy mẫu khung hình trong trình duyệt, mặc định quét 30% phía dưới, có lựa chọn giản thể/phồn thể và tần suất 0,5–1,5 giây. Giới hạn video 30 phút/lượt; cần kết nối mạng lần đầu để tải thư viện/ngôn ngữ OCR. Người dùng cần rà soát kết quả OCR. Sau khi ghép bản dịch và lưu, trình phát video MP4/WebM có thể hiển thị phụ đề tiếng Việt, tiếng Trung hoặc song ngữ ngay trên khung hình.
 - Sau OCR, sao chép danh sách tiếng Trung sang ChatGPT để dịch, dán bản Việt theo thứ tự, ghép và lưu phụ đề song ngữ. Không cần API dịch trả phí; thao tác dịch chưa tự động vì trang tĩnh không có quyền gọi mô hình ChatGPT trong tài khoản người dùng.
-- Chưa có backend, lưu trữ file đám mây, đồng bộ đa thiết bị, tài khoản người dùng hay API dịch.
+- Chưa cấu hình thông tin dự án Supabase thực tế; vì vậy đăng nhập và đồng bộ chưa thể hoạt động cho tới khi có URL/khóa công khai và chạy SQL khởi tạo. Không đưa service_role key vào website.
 - Chưa nhập dữ liệu Firestore/Storage của bản Claude Artifact cũ. Cần bản export thực tế để khôi phục đủ 13 truyện và dữ liệu video cũ; README cũ chỉ là danh sách thống kê, không chứa nội dung chương.
 
 ## Triển khai
