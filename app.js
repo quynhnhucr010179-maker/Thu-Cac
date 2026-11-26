@@ -35,11 +35,23 @@ async function syncWikiCatalog(storyId){const s=data.stories.find(x=>x.id===stor
 
 const READER_PREF_KEY="thuca.reader.preferences.v1";
 function readerPrefs(){try{return {theme:"mint",fontSize:19,lineHeight:1.9,mode:"scroll",...(JSON.parse(localStorage.getItem(READER_PREF_KEY)||"{}")||{})}}catch{return {theme:"mint",fontSize:19,lineHeight:1.9,mode:"scroll"}}}
+function readerParagraphs(raw){
+ const text=String(raw||"").replace(/\r\n?/g,"\n").replace(/\\n/g,"\n").replace(/\\r/g,"\n").trim();
+ if(!text)return '<p class="tc-empty-chapter">Chương này chưa có nội dung được lưu.</p>';
+ let lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+ if(lines.length===1){
+  lines=lines[0]
+   .replace(/([。！？!?])(?=\S)/g,"$1\n")
+   .replace(/([.!?])\s+(?=[A-ZÀ-Ỹ])/gu,"$1\n")
+   .split(/\n+/).map(x=>x.trim()).filter(Boolean);
+ }
+ return lines.map(x=>'<p>'+esc(x)+'</p>').join("");
+}
 function reader(s,c,i){
  const ch=s.chapters||[],p=readerPrefs(),saved=data.shelf.includes(s.id);
  data.progress=data.progress||{};data.progress[s.id]=i;try{localStorage.setItem(KEY,JSON.stringify(data))}catch{}
  const content=String(c?.content||"").trim();
- const paragraphs=content?content.split(/\\n\\s*\\n/).map(x=>'<p>'+esc(x).replace(/\\n/g,"<br>")+'</p>').join(""):'<p class="tc-empty-chapter">Chương này chưa có nội dung được lưu.</p>';
+ const paragraphs=readerParagraphs(content);
  return '<main class="tc-reader" id="tcReader" data-theme="'+esc(p.theme)+'" data-read-mode="'+esc(p.mode)+'" style="--tc-font-size:'+Number(p.fontSize)+'px;--tc-line-height:'+Number(p.lineHeight)+'">'+
  '<header class="tc-reader__top"><button class="tc-icon-btn" data-reader-action="back" aria-label="Quay lại trang truyện">‹</button><div class="tc-reader__heading"><div class="tc-reader__book-title">'+esc(s.title)+'</div><div class="tc-reader__chapter-title">'+esc(c?.title||("Chương "+(i+1)))+'</div></div><button class="tc-text-btn" data-reader-action="bookmark">'+(saved?'✓ Đã lưu':'＋ Tủ sách')+'</button><button class="tc-icon-btn" data-reader-action="more" aria-label="Thêm">⋮</button></header>'+
  '<section class="tc-reading-area"><div class="tc-reading-meta"><span>Chương '+(i+1)+' / '+ch.length+'</span><span>'+((content.length/900)|0+1)+' phút đọc ước tính</span></div><article class="tc-prose" id="chapterContent"><h1>'+esc(c?.title||("Chương "+(i+1)))+'</h1>'+paragraphs+'</article>'+
