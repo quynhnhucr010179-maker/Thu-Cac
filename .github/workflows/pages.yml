@@ -20,7 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check JavaScript syntax
-        run: node --check app.js
+        run: node --check app.js && node --check cloud-sync.js && node --check supabase-config.js
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
