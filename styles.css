@@ -1470,3 +1470,11 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 .hero-ocean::before,.hero-ocean:before{background:linear-gradient(90deg,rgba(7,43,73,.42) 0%,rgba(7,43,73,.22) 42%,rgba(7,43,73,0) 76%)!important;z-index:1!important}
 .hero-reference-art{display:block!important;z-index:0!important}
 .hero-reference-art img{display:block!important}
+
+
+/* THƯ CÁ cloud sync settings panel */
+#cloud-sync-panel{margin-top:12px;padding:16px;border:1px solid #dce9df;border-radius:16px;background:linear-gradient(135deg,#f8fcf8,#eef7f8)}
+#cloud-sync-panel h3{margin:0 0 8px;color:#245d58;font-size:17px}
+#cloud-sync-panel .field{margin:10px 0}
+#cloud-sync-panel input{width:100%;min-height:42px;border:1px solid #d7e4dc;border-radius:10px;padding:10px 12px;background:#fff}
+#cloud-sync-status{margin-top:12px;white-space:normal;overflow-wrap:anywhere}
