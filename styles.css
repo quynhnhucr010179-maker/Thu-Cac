@@ -1443,3 +1443,22 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
  .tc-prose p{margin-bottom:1.25em;text-indent:1.35em}
  .tc-reader{--tc-font-size:18px;--tc-line-height:1.95}
 }
+
+
+/* Banner refinement: use the saved mermaid artwork as a full-width image; remove the separate vector mascot. */
+.hero-ocean{position:relative!important;isolation:isolate;overflow:hidden!important;min-height:320px!important;background:#328fbd!important}
+.hero-reference-art{position:absolute!important;inset:0!important;overflow:hidden!important;z-index:0!important;pointer-events:none!important}
+.hero-reference-art img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;left:0!important;top:0!important;transform:none!important;object-fit:cover!important;object-position:48% 43%!important;opacity:1!important;filter:saturate(1.04)!important}
+.hero-ocean:after{content:none!important;display:none!important;background:none!important}
+.hero-ocean:before{content:"";display:block!important;position:absolute!important;inset:0!important;z-index:1!important;pointer-events:none!important;background:linear-gradient(90deg,rgba(7,43,73,.56) 0%,rgba(7,43,73,.34) 40%,rgba(7,43,73,.04) 78%)!important}
+.hero-ocean .hero-copy{position:relative!important;z-index:2!important;width:min(54%,650px)!important;max-width:54%!important;padding:28px 34px!important}
+.hero-ocean h1{color:#fff!important;text-shadow:0 2px 12px rgba(0,28,53,.48)!important}
+.hero-ocean p{color:rgba(255,255,255,.94)!important;text-shadow:0 1px 8px rgba(0,28,53,.45)!important}
+.hero-ocean .eyebrow{color:#e1f7ff!important;text-shadow:0 1px 8px rgba(0,28,53,.5)!important}
+.hero-ocean .primary-btn{background:#fff!important;color:#17658e!important;box-shadow:0 5px 18px rgba(0,31,58,.22)!important}
+@media(max-width:760px){
+ .hero-ocean{min-height:280px!important}
+ .hero-reference-art img{object-position:52% 40%!important}
+ .hero-ocean:before{background:linear-gradient(90deg,rgba(7,43,73,.66) 0%,rgba(7,43,73,.34) 62%,rgba(7,43,73,.08) 100%)!important}
+ .hero-ocean .hero-copy{width:78%!important;max-width:78%!important;padding:20px 14px!important}
+}
