@@ -56,17 +56,17 @@
   if(!user||!client)return;
   const b=bridge();if(!b)throw new Error("Chưa kết nối được dữ liệu THƯ CÁ");
   status("Đang kiểm tra thư viện đám mây…");
-  const {data:row,error}=await client.from("user_libraries").select("data,updated_at").eq("user_id",user.id).maybeSingle();
+  const {data:row,error}=await client.from("thuca_library").select("payload,updated_at").eq("owner_id",user.id).maybeSingle();
   if(error)throw error;
   const local=b.getData();
-  if(!row){const {error:e}=await client.from("user_libraries").upsert({user_id:user.id,data:local,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(e)throw e;status("Đã sao lưu thư viện thiết bị này lên đám mây.");return}
+  if(!row){const {error:e}=await client.from("thuca_library").upsert({owner_id:user.id,payload:local,updated_at:new Date().toISOString()},{onConflict:"owner_id"});if(e)throw e;status("Đã sao lưu thư viện thiết bị này lên đám mây.");return}
   applyingRemote=true;
-  try{const merged=mergeLibrary(local,row.data||{});b.setData(merged);const {error:e}=await client.from("user_libraries").upsert({user_id:user.id,data:merged,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(e)throw e;status("Đã đồng bộ xong. Thư viện đã được hợp nhất.");}
+  try{const merged=mergeLibrary(local,row.payload||{});b.setData(merged);const {error:e}=await client.from("thuca_library").upsert({owner_id:user.id,payload:merged,updated_at:new Date().toISOString()},{onConflict:"owner_id"});if(e)throw e;status("Đã đồng bộ xong. Thư viện đã được hợp nhất.");}
   finally{applyingRemote=false}
  }
  function schedulePush(snapshot){
   if(!ready||!user||!client||applyingRemote)return;
-  clearTimeout(pushTimer);pushTimer=setTimeout(async()=>{try{const {error}=await client.from("user_libraries").upsert({user_id:user.id,data:snapshot,updated_at:new Date().toISOString()},{onConflict:"user_id"});if(error)throw error;status("Đã tự đồng bộ lúc "+new Date().toLocaleTimeString("vi-VN"));}catch(e){status("Chưa đồng bộ được: "+e.message)}},1800);
+  clearTimeout(pushTimer);pushTimer=setTimeout(async()=>{try{const {error}=await client.from("thuca_library").upsert({owner_id:user.id,payload:snapshot,updated_at:new Date().toISOString()},{onConflict:"owner_id"});if(error)throw error;status("Đã tự đồng bộ lúc "+new Date().toLocaleTimeString("vi-VN"));}catch(e){status("Chưa đồng bộ được: "+e.message)}},1800);
  }
  window.TCCloudSync={init,render,syncNow,schedulePush,get isReady(){return ready},get isApplyingRemote(){return applyingRemote}};
  document.addEventListener("DOMContentLoaded",()=>{init().catch(e=>status("Không kết nối được máy chủ: "+e.message))});
