@@ -1462,3 +1462,11 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
  .hero-ocean:before{background:linear-gradient(90deg,rgba(7,43,73,.66) 0%,rgba(7,43,73,.34) 62%,rgba(7,43,73,.08) 100%)!important}
  .hero-ocean .hero-copy{width:78%!important;max-width:78%!important;padding:20px 14px!important}
 }
+
+
+/* Explicitly remove the decorative SVG mermaid/fish layer from the homepage banner. Keep ONLY the uploaded PNG artwork in .hero-reference-art. */
+.hero-ocean{background-color:#328fbd!important;background-image:none!important}
+.hero-ocean::after,.hero-ocean:after{content:""!important;display:none!important;visibility:hidden!important;opacity:0!important;background-image:none!important;background:none!important;width:0!important;height:0!important;box-shadow:none!important;border:0!important}
+.hero-ocean::before,.hero-ocean:before{background:linear-gradient(90deg,rgba(7,43,73,.42) 0%,rgba(7,43,73,.22) 42%,rgba(7,43,73,0) 76%)!important;z-index:1!important}
+.hero-reference-art{display:block!important;z-index:0!important}
+.hero-reference-art img{display:block!important}
