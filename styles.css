@@ -1202,3 +1202,13 @@ body{background:linear-gradient(180deg,#e7f6ff 0%,#f5fbff 52%,#e6f5ff 100%);colo
  .story-synopsis:not([open]){background:#f8fbf9}
  .story-synopsis p{font-size:13px;line-height:1.75}
 }
+
+
+/* THU CA video feed: correct posters and controls for embedded providers */
+.feed-stage>.video-poster-placeholder{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.feed-item.feed-embed-only .feed-video{display:none!important}
+.feed-item.feed-embed-only .feed-stage>.video-poster{opacity:1;filter:none}
+.feed-item.feed-embed-only .feed-play-toggle,
+.feed-item.feed-embed-only .feed-actions [data-feed-sound],
+.feed-item.feed-embed-only .feed-actions [data-feed-sub],
+.feed-item.feed-embed-only .feed-muted-hint{display:none!important}
