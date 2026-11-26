@@ -1428,3 +1428,18 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 @media(max-width:420px){
  .hero-reference-art img{width:220%;left:-122%;top:92px}
 }
+
+
+/* Reader legibility: clear sentence/paragraph breaks and comfortable reading width */
+.tc-reading-area{max-width:760px;padding:34px clamp(22px,6vw,72px) 120px}
+.tc-prose{font-size:var(--tc-font-size);line-height:var(--tc-line-height);letter-spacing:.015em;text-align:justify;overflow-wrap:anywhere;word-break:normal}
+.tc-prose p{margin:0 0 1.35em;text-indent:1.6em;line-height:inherit}
+.tc-prose p+p{margin-top:.25em}
+.tc-prose h1{margin:30px 0 38px;line-height:1.5}
+.tc-reader{--tc-font-size:20px;--tc-line-height:2}
+@media(max-width:680px){
+ .tc-reading-area{padding:24px 20px 112px}
+ .tc-prose{font-size:18px;line-height:1.95;text-align:left}
+ .tc-prose p{margin-bottom:1.25em;text-indent:1.35em}
+ .tc-reader{--tc-font-size:18px;--tc-line-height:1.95}
+}
