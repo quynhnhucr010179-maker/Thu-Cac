@@ -43,3 +43,10 @@ Trong website, mở **Quản trị nội dung → Sao lưu dữ liệu → Tải
 5. Tạo tài khoản bằng email/mật khẩu trong mục đồng bộ. Đăng nhập đúng tài khoản đó trên cả điện thoại và máy tính. Trước lần đồng bộ đầu tiên, hãy tải JSON dự phòng trên cả thiết bị đang có truyện.
 
 Lưu ý: Supabase Free có thể tự tạm dừng project sau một tuần không hoạt động. Phần đồng bộ này chỉ đồng bộ dữ liệu thư viện dạng JSON; video tải tệp trực tiếp vẫn nằm riêng trên thiết bị. Không gửi mật khẩu Supabase hoặc Secret/service_role key cho bất kỳ ai.
+
+
+## Tiện ích đọc tiếp và dùng khi mất mạng
+- Trang Khám phá có khu vực **Đọc tiếp truyện đang theo dõi**, tự lấy chương gần nhất đã mở từ tiến độ đọc đã lưu.
+- THƯ CÁ có manifest để cài như ứng dụng web trên trình duyệt tương thích.
+- Service worker lưu bộ khung ứng dụng và các tệp giao diện cốt lõi để mở lại trang khi mất mạng sau lần truy cập online đầu tiên. Dữ liệu truyện vẫn dựa vào bộ nhớ trình duyệt hoặc đồng bộ Supabase; video từ URL bên ngoài cần mạng và không được tự tải xuống.
+- Trên điện thoại, dùng menu trình duyệt **Thêm vào màn hình chính / Cài đặt ứng dụng** nếu tùy chọn này xuất hiện. Trên Chrome máy tính, dùng biểu tượng cài đặt ở thanh địa chỉ hoặc menu Cài đặt.
