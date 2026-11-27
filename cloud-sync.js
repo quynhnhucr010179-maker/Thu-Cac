@@ -4,7 +4,7 @@
  const cfg=window.THUCAS_SUPABASE_CONFIG||{};
  const BUCKET="thuca-videos";
  const ready=!!(cfg.url&&cfg.publishableKey&&window.supabase?.createClient);
- let client=null,user=null,channel=null,pushTimer=null,pollTimer=null,syncPromise=null,applyingRemote=false;
+ let client=null,user=null,channel=null,pushTimer=null,pollTimer=null,syncPromise=null,applyingRemote=false,pendingPush=false;
  let lastStatus="Đang khởi tạo đồng bộ…";
  const $=s=>document.querySelector(s);
  const bridge=()=>window.THUCAS_DATA_BRIDGE;
@@ -82,6 +82,14 @@
    await client.auth.signOut();user=null;render();status("Đã đăng xuất khỏi THƯ CÁ.");
   });
  }
+ async function cleanupDeletedVideoAssets(library){
+  for(const t of library.syncTombstones||[]){
+   if(t.type==="video"&&t.storagePath&&!(library.videos||[]).some(v=>v.id===t.id)){
+    const {error}=await client.storage.from(BUCKET).remove([t.storagePath]);
+    if(error&&error.statusCode!=="404")status("Thư viện đã xóa video; chưa dọn được tệp lưu trữ: "+error.message);
+   }
+  }
+ }
  async function syncVideoAssets(library){
   const b=bridge(),failed=[];
   if(!b?.getVideoBlob||!user)return failed;
@@ -106,6 +114,7 @@
    const remote=row?.payload||{};
    const merged=mergeLibrary(local,remote);
    const assetErrors=await syncVideoAssets(merged);
+   await cleanupDeletedVideoAssets(merged);
    const mergedText=JSON.stringify(merged),remoteText=JSON.stringify(remote);
    if(row&&mergedText===remoteText){
     bridge().setData(merged);
@@ -141,14 +150,15 @@
     const count=result.assetErrors.length;
     status(count?"Đã đồng bộ truyện và chương; "+count+" video chưa tải lên được. "+result.assetErrors.slice(0,2).join(" | "):"Đã đồng bộ xong. Điện thoại và máy tính đang dùng chung thư viện.");
     return result;
-   }finally{applyingRemote=false}
+   }finally{applyingRemote=false;if(pendingPush){pendingPush=false;schedulePush()}}
   })();
   try{return await syncPromise}finally{syncPromise=null}
  }
  function schedulePush(){
-  if(!ready||!user||!client||applyingRemote)return;
-  clearTimeout(pushTimer);
-  pushTimer=setTimeout(()=>syncNow().catch(e=>status("Chưa đồng bộ được: "+e.message)),1200);
+  if(!ready||!user||!client)return;
+  pendingPush=true;clearTimeout(pushTimer);
+  if(applyingRemote)return;
+  pushTimer=setTimeout(()=>{pendingPush=false;syncNow().catch(e=>status("Chưa đồng bộ được: "+e.message))},1200);
  }
  function subscribe(){
   if(channel){client.removeChannel(channel);channel=null}
@@ -164,10 +174,10 @@
   client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   const {data,error}=await client.auth.getSession();if(error)throw error;
   user=data.session?.user||null;render();
-  if(user){await syncNow();subscribe()}
+  if(user){try{await syncNow()}catch(e){status("Chưa tải được thư viện ban đầu: "+e.message)}subscribe()}
   client.auth.onAuthStateChange((_event,session)=>{
    user=session?.user||null;render();
-   if(user){setTimeout(()=>syncNow().then(subscribe).catch(e=>status("Đồng bộ chưa thành công: "+e.message)),0)}
+   if(user){setTimeout(async()=>{try{await syncNow()}catch(e){status("Đồng bộ chưa thành công: "+e.message)}finally{subscribe()}},0)}
    else{if(channel){client.removeChannel(channel);channel=null}}
   });
   window.addEventListener("focus",()=>{if(user)syncNow().catch(e=>status("Chưa làm mới được dữ liệu: "+e.message))});
