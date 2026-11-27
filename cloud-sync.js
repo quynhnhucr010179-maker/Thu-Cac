@@ -256,6 +256,7 @@
  window.TCCloudSync={
   init,render,syncNow,schedulePush,getVideoUrl,updateProfile,
   get profile(){return profile()},
+  get userId(){return user?.id||"guest"},
   get accountLabel(){return user?.email||"Tài khoản THƯ CÁ"},
   get isReady(){return ready},
   get isConnected(){return !!user},
