@@ -1611,3 +1611,60 @@ body:has(.tc-reader) .mobile-bottom-nav,body:has(.tc-reader) .footer{display:non
 body:has(.tc-reader[data-theme="night"]) #readerSheet{background:#171a1e;color:#e4e5e7;border-color:#343a40}
 body:has(.tc-reader[data-theme="night"]) #readerSheet .tc-chapter-list li button,body:has(.tc-reader[data-theme="night"]) #readerSheet .tc-action-row{color:#d7e4eb;border-color:#343a40}
 @media(max-width:680px){#readerSheet.tc-sheet{width:100vw;max-height:82dvh;border-radius:22px 22px 0 0;padding-left:17px;padding-right:17px}}
+
+
+/* Immersive reading layout — remove the library chrome while a chapter is open */
+body:has(.tc-reader) .topbar,
+body:has(.tc-reader) #breadcrumb,
+body:has(.tc-reader) .footer,
+body:has(.tc-reader) .mobile-bottom-nav{display:none!important}
+body:has(.tc-reader) .app-shell{display:block;min-height:100dvh}
+body:has(.tc-reader) .main-area{min-height:100dvh}
+body:has(.tc-reader) .view{width:100%;max-width:none;margin:0;padding:0;min-height:100dvh}
+.tc-reader{width:100%;max-width:none;margin:0;border:0;border-radius:0;box-shadow:none;min-height:100dvh;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+.tc-reader__top{min-height:64px;padding:12px clamp(14px,3vw,34px);gap:12px}
+.tc-reader__book-title{font-size:14px;letter-spacing:.01em}
+.tc-reader__chapter-title{font-size:12px}
+.tc-reader .tc-icon-btn{display:grid;place-items:center;font-size:25px;line-height:1}
+.tc-reader .tc-text-btn{font-size:12px;padding:10px 15px}
+.tc-reading-area{max-width:820px;padding:34px clamp(22px,6vw,76px) 130px}
+.tc-reading-meta{font-size:11px;letter-spacing:.04em}
+.tc-prose{font-size:var(--tc-font-size);line-height:var(--tc-line-height)}
+.tc-prose h1{font-size:1.5em;margin:28px 0 42px}
+.tc-prose p{text-align:justify;text-indent:2em;margin:0 0 1.2em}
+.tc-reader__toolbar{bottom:max(14px,env(safe-area-inset-bottom));gap:8px;padding:8px 12px}
+.tc-reader__toolbar button{min-width:92px;padding:8px 12px;font-size:21px}
+.tc-reader__toolbar button b{display:block;font-weight:500;line-height:1.2}
+.tc-reader__toolbar button span{font-size:11px;margin-top:4px}
+.tc-font-size-row{display:flex;align-items:center;gap:12px}
+.tc-font-size-row input{flex:1}
+.tc-font-step{border:0;border-radius:18px;min-width:72px;padding:11px 14px;background:#e5edf3;color:#244c66;font-size:18px;cursor:pointer}
+.tc-toggle-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 2px;margin:12px 0;border:0;border-bottom:1px solid #dceaf1;background:transparent;color:inherit;text-align:left;cursor:pointer}
+.tc-toggle-row span{display:grid;gap:4px}
+.tc-toggle-row small{font-size:11px;opacity:.7}
+.tc-toggle{width:46px;height:26px;border-radius:20px;background:#c7d2dc;position:relative;flex:0 0 46px}
+.tc-toggle:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:white;box-shadow:0 1px 4px #0002;transition:transform .18s}
+.tc-toggle.is-on{background:#3889b3}
+.tc-toggle.is-on:after{transform:translateX(20px)}
+.tc-reader[data-eye-care="true"] .tc-reading-surface{filter:brightness(.96) sepia(.12) saturate(.88)}
+.tc-reader[data-theme="night"] .tc-font-step{background:#252b31;color:#e4e5e7}
+.tc-reader[data-theme="night"] .tc-toggle-row{border-color:#343a40}
+.tc-reader[data-theme="night"] .tc-toggle{background:#454d55}
+.tc-reader[data-theme="night"] .tc-toggle.is-on{background:#246f9a}
+@media(max-width:680px){
+ body:has(.tc-reader) .view{padding:0}
+ .tc-reader{min-height:100dvh;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+ .tc-reader__top{min-height:60px;padding:9px 10px;gap:6px}
+ .tc-reader__book-title{font-size:12px}
+ .tc-reader__chapter-title{font-size:10px}
+ .tc-reader .tc-text-btn{font-size:10px;padding:8px 9px}
+ .tc-reader .tc-icon-btn{width:32px;height:32px;flex-basis:32px;font-size:22px}
+ .tc-reading-area{padding:22px 24px 110px}
+ .tc-prose{font-size:var(--tc-font-size);line-height:var(--tc-line-height)}
+ .tc-prose h1{font-size:1.32em;margin:20px 0 30px}
+ .tc-prose p{text-align:left;text-indent:1.3em;margin-bottom:1.18em}
+ .tc-reader__toolbar{left:12px;right:12px;bottom:max(8px,env(safe-area-inset-bottom));justify-content:space-around;gap:2px;padding:7px 5px}
+ .tc-reader__toolbar button{min-width:0;flex:1;padding:7px 2px;font-size:19px}
+ .tc-reader__toolbar button span{font-size:9px}
+ .tc-font-step{min-width:54px;padding:9px 10px}
+}
