@@ -44,8 +44,8 @@
    ...remote,...local,
    stories:mergeRecords(local.stories,remote.stories,tombstones.filter(x=>x.type==="story")),
    videos:mergeRecords(local.videos,remote.videos,tombstones.filter(x=>x.type==="video")),
-   shelf:ls>=rs?(local.shelf||[]):(remote.shelf||[]),
-   progress:lp>=rp?(local.progress||{}):(remote.progress||{}),
+   shelf:ls===0&&rs===0?[...new Set([...(remote.shelf||[]),...(local.shelf||[])])]:ls>=rs?(local.shelf||[]):(remote.shelf||[]),
+   progress:lp===0&&rp===0?{...(remote.progress||{}),...(local.progress||{})}:lp>=rp?(local.progress||{}):(remote.progress||{}),
    progressUpdatedAt:lp>=rp?(local.progressUpdatedAt||remote.progressUpdatedAt):(remote.progressUpdatedAt||local.progressUpdatedAt),
    shelfUpdatedAt:ls>=rs?(local.shelfUpdatedAt||remote.shelfUpdatedAt):(remote.shelfUpdatedAt||local.shelfUpdatedAt),
    syncTombstones:tombstones.filter((t,i,a)=>a.findIndex(x=>x.type===t.type&&x.id===t.id&&x.deletedAt===t.deletedAt)===i).slice(-2000)
@@ -99,12 +99,19 @@
   }
   return failed;
  }
+ function stampLegacyRecords(library){
+  const now=new Date().toISOString();
+  for(const item of [...(library.stories||[]),...(library.videos||[])])if(!item.updatedAt)item.updatedAt=now;
+  if((library.shelf||[]).length&&!library.shelfUpdatedAt)library.shelfUpdatedAt=now;
+  if(Object.keys(library.progress||{}).length&&!library.progressUpdatedAt)library.progressUpdatedAt=now;
+ }
  async function writeMerged(local){
   for(let attempt=0;attempt<4;attempt++){
    const {data:row,error:readError}=await client.from("thuca_library").select("payload,revision,updated_at").eq("owner_id",user.id).maybeSingle();
    if(readError)throw readError;
    const remote=row?.payload||{};
    const merged=mergeLibrary(local,remote);
+   stampLegacyRecords(merged);
    const assetErrors=await syncVideoAssets(merged);
    const mergedText=JSON.stringify(merged),remoteText=JSON.stringify(remote);
    if(row&&mergedText===remoteText){
