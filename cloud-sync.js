@@ -89,7 +89,7 @@
    if(!v.fileStored||v.storagePath)continue;
    try{
     const blob=await b.getVideoBlob(v.id);
-    if(!blob)continue;
+    if(!blob)throw new Error("Chưa tìm thấy tệp gốc trên thiết bị đang đồng bộ.");
     if(blob.size>50*1024*1024)throw new Error("Video vượt giới hạn tải lên 50 MB hiện đặt cho THƯ CÁ.");
     const path=user.id+"/"+v.id+"/media";
     const {error}=await client.storage.from(BUCKET).upload(path,blob,{upsert:true,cacheControl:"3600",contentType:blob.type||"video/mp4"});
