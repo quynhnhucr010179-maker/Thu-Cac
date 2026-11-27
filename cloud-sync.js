@@ -36,18 +36,13 @@
   }
   return [...map.values()];
  }
+ function sharedOnly(value={}){return {stories:Array.isArray(value.stories)?value.stories:[],videos:Array.isArray(value.videos)?value.videos:[],syncTombstones:Array.isArray(value.syncTombstones)?value.syncTombstones:[]}}
  function mergeLibrary(local={},remote={}){
   const tombstones=[...(remote.syncTombstones||[]),...(local.syncTombstones||[])];
-  const lp=Date.parse(local.progressUpdatedAt||0)||0,rp=Date.parse(remote.progressUpdatedAt||0)||0;
-  const ls=Date.parse(local.shelfUpdatedAt||0)||0,rs=Date.parse(remote.shelfUpdatedAt||0)||0;
   const merged={
    ...remote,...local,
    stories:mergeRecords(local.stories,remote.stories,tombstones.filter(x=>x.type==="story")),
    videos:mergeRecords(local.videos,remote.videos,tombstones.filter(x=>x.type==="video")),
-   shelf:ls===0&&rs===0?[...new Set([...(remote.shelf||[]),...(local.shelf||[])])]:ls>=rs?(local.shelf||[]):(remote.shelf||[]),
-   progress:lp===0&&rp===0?{...(remote.progress||{}),...(local.progress||{})}:lp>=rp?(local.progress||{}):(remote.progress||{}),
-   progressUpdatedAt:lp>=rp?(local.progressUpdatedAt||remote.progressUpdatedAt):(remote.progressUpdatedAt||local.progressUpdatedAt),
-   shelfUpdatedAt:ls>=rs?(local.shelfUpdatedAt||remote.shelfUpdatedAt):(remote.shelfUpdatedAt||local.shelfUpdatedAt),
    syncTombstones:tombstones.filter((t,i,a)=>a.findIndex(x=>x.type===t.type&&x.id===t.id&&x.deletedAt===t.deletedAt)===i).slice(-2000)
   };
   return merged;
@@ -75,7 +70,7 @@
    });
    return;
   }
-  panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Kho truyện, toàn bộ chương, ảnh bìa và video dùng chung cho mọi tài khoản. Tủ sách và tiến độ đọc cũng đang nằm trong dữ liệu chia sẻ. Video tải tệp lên sẽ được đưa vào kho lưu trữ đám mây riêng tư (giới hạn theo cấu hình gói Supabase).</small>';
+  panel.innerHTML='<h3>Tài khoản THƯ CÁ</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><p class="page-desc">Khám phá và Video là thư viện chung. Tủ sách và tiến độ đọc được lưu riêng cho tài khoản này.</p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Kho truyện, toàn bộ chương, ảnh bìa và video dùng chung cho mọi tài khoản. Tủ sách và tiến độ đọc cũng đang nằm trong dữ liệu chia sẻ. Video tải tệp lên sẽ được đưa vào kho lưu trữ đám mây riêng tư (giới hạn theo cấu hình gói Supabase).</small>';
   $("#cloud-sync-now")?.addEventListener("click",()=>syncNow().catch(e=>status("Đồng bộ chưa thành công: "+e.message)));
   $("#cloud-signout")?.addEventListener("click",async()=>{
    status("Đang đăng xuất…");if(channel){await client.removeChannel(channel);channel=null}
@@ -102,15 +97,14 @@
  function stampLegacyRecords(library){
   const now=new Date().toISOString();
   for(const item of [...(library.stories||[]),...(library.videos||[])])if(!item.updatedAt)item.updatedAt=now;
-  if((library.shelf||[]).length&&!library.shelfUpdatedAt)library.shelfUpdatedAt=now;
-  if(Object.keys(library.progress||{}).length&&!library.progressUpdatedAt)library.progressUpdatedAt=now;
  }
  async function writeMerged(local){
   for(let attempt=0;attempt<4;attempt++){
    const {data:row,error:readError}=await client.from("thuca_shared_library").select("payload,revision,updated_at").eq("id","global").maybeSingle();
    if(readError)throw readError;
-   const remote=row?.payload||{};
-   const merged=mergeLibrary(local,remote);
+   const sharedLocal=sharedOnly(local);
+   const remote=sharedOnly(row?.payload||{});
+   const merged=mergeLibrary(sharedLocal,remote);
    stampLegacyRecords(merged);
    const assetErrors=await syncVideoAssets(merged);
    const mergedText=JSON.stringify(merged),remoteText=JSON.stringify(remote);
@@ -137,6 +131,31 @@
   }
   throw new Error("Có thay đổi đồng thời trên thiết bị khác. Bấm Đồng bộ ngay để thử hợp nhất lại.");
  }
+ async function syncPersonal(){
+  if(!user||!client)return;
+  const b=bridge();if(!b?.getPersonalData||!b?.setPersonalData)return;
+  const markerKey="thuca.personal.owner",marker=localStorage.getItem(markerKey);
+  const {data:row,error}=await client.from("thuca_user_library").select("payload,revision,updated_at").eq("owner_id",user.id).maybeSingle();
+  if(error)throw error;
+  if(row){
+   const remote=row.payload||{shelf:[],progress:{}},local=b.getPersonalData();
+   const remoteTime=Date.parse(remote.updatedAt||row.updated_at||0)||0;
+   const localTime=Date.parse(local.updatedAt||0)||0;
+   if(localTime>remoteTime){
+    const {data:updated,error:updateError}=await client.from("thuca_user_library").update({payload:local,revision:(Number(row.revision)||1)+1,updated_at:new Date().toISOString()}).eq("owner_id",user.id).eq("revision",Number(row.revision)||1).select("owner_id").maybeSingle();
+    if(updateError)throw updateError;
+    if(!updated)throw new Error("Dữ liệu cá nhân vừa thay đổi ở thiết bị khác. Hãy đồng bộ lại.");
+   }else b.setPersonalData(remote);
+   localStorage.setItem(markerKey,user.id);
+   return;
+  }
+  const initial=marker&&marker!==user.id?{shelf:[],progress:{},updatedAt:new Date().toISOString()}:b.getPersonalData();
+  const {error:insertError}=await client.from("thuca_user_library").insert({owner_id:user.id,payload:initial,revision:1,updated_at:new Date().toISOString()});
+  if(insertError&&insertError.code!=="23505")throw insertError;
+  if(insertError?.code==="23505")return syncPersonal();
+  b.setPersonalData(initial);
+  localStorage.setItem(markerKey,user.id);
+ }
  async function syncNow(){
   if(!user||!client)return;
   if(syncPromise)return syncPromise;
@@ -145,6 +164,7 @@
    applyingRemote=true;status("Đang tải và hợp nhất dữ liệu từ đám mây…");
    try{
     const result=await writeMerged(b.getData());
+    await syncPersonal();
     const count=result.assetErrors.length;
     status(count?"Đã đồng bộ truyện và chương; "+count+" video chưa tải lên được. "+result.assetErrors.slice(0,2).join(" | "):"Đã đồng bộ xong. Mọi tài khoản THƯ CÁ đang dùng chung thư viện.");
     return result;
@@ -165,6 +185,7 @@
    .on("postgres_changes",{event:"*",schema:"public",table:"thuca_shared_library"},()=>{
     if(!applyingRemote)syncNow().catch(e=>status("Không nhận được thay đổi mới: "+e.message));
    })
+   .on("postgres_changes",{event:"*",schema:"public",table:"thuca_user_library",filter:"owner_id=eq."+user.id},()=>{if(!applyingRemote)syncNow().catch(e=>status("Không nhận được thay đổi cá nhân: "+e.message))})
    .subscribe(state=>{if(state==="CHANNEL_ERROR")status("Kết nối cập nhật trực tiếp bị gián đoạn; THƯ CÁ vẫn kiểm tra khi mở lại hoặc quay về tab.")});
  }
  async function init(){
