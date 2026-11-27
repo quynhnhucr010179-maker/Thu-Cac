@@ -1507,3 +1507,19 @@ body[data-user-theme="night"] .profile-shortcuts button,body[data-user-theme="ni
 .profile-settings .primary-btn{background:var(--green);color:#fff}
 .profile-save-note{display:inline-block;margin-left:12px}
 @media(max-width:680px){.profile-settings{padding:16px}.profile-fields{grid-template-columns:1fr;gap:4px}.profile-settings-head h2{font-size:21px}.profile-avatar-large{width:64px;height:64px;flex-basis:64px}}
+
+/* Ensure profile form remains editable above decorative/mobile layers */
+#profile-settings-form,#profile-settings-form *{pointer-events:auto}
+#profile-settings-form{position:relative;z-index:2}
+#profile-settings-form .profile-fields{position:relative;z-index:2}
+#profile-settings-form input:not([type=file]),#profile-settings-form select{
+ position:relative;z-index:3;display:block;min-height:46px;width:100%;
+ pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important;
+ cursor:text;touch-action:auto;background:var(--white);color:var(--ink);
+ opacity:1; -webkit-appearance:none;appearance:none;
+}
+#profile-settings-form select{cursor:pointer}
+#profile-settings-form input:focus,#profile-settings-form select:focus{
+ outline:3px solid color-mix(in srgb,var(--green) 22%,transparent);outline-offset:1px;border-color:var(--green)
+}
+#profile-settings-form button,#profile-settings-form label{position:relative;z-index:3;pointer-events:auto}
