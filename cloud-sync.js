@@ -139,6 +139,11 @@
   if(error)throw error;
   if(row){
    const remote=row.payload||{shelf:[],progress:{}},local=b.getPersonalData();
+   if(marker!==user.id){
+    b.setPersonalData(remote);
+    localStorage.setItem(markerKey,user.id);
+    return;
+   }
    const remoteTime=Date.parse(remote.updatedAt||row.updated_at||0)||0;
    const localTime=Date.parse(local.updatedAt||0)||0;
    if(localTime>remoteTime){
