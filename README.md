@@ -16,17 +16,14 @@ Website thư viện truyện và video, triển khai trên GitHub Pages theo hư
 ## Mở website
 https://quynhnhucr010179-maker.github.io/Thu-Cac/
 
-## Dữ liệu và giới hạn quan trọng
-- Dữ liệu vẫn được lưu cục bộ để ứng dụng hoạt động khi chưa đăng nhập. Phần đồng bộ đám mây Supabase đã được tích hợp trong mã nguồn nhưng chỉ hoạt động sau khi cấu hình dự án Supabase, tạo bảng theo `supabase/schema.sql` và điền Project URL + publishable key vào `supabase-config.js`.
-- Khi đồng bộ được bật, truyện, chương, ảnh bìa, metadata video và phụ đề sẽ đồng bộ theo tài khoản. Tệp video tải trực tiếp lên thiết bị vẫn nằm trong IndexedDB của từng thiết bị và không được tải lên đám mây.
-- Hãy xuất JSON định kỳ. Ảnh bìa được nén nhưng vẫn chiếm dung lượng trình duyệt; nếu bộ nhớ đầy, hãy giảm ảnh hoặc sao lưu.
-- Nhập chương hàng loạt là bộ tách theo mẫu tiêu đề phổ biến, không thể bảo đảm nhận diện đúng mọi website/ngôn ngữ. Cần xem trước và kiểm tra thứ tự.
-- Video từ YouTube/Vimeo phát qua trình nhúng của nhà cung cấp; MP4 cần là URL truy cập trực tiếp. Không tải video từ nền tảng khác về.
-- Phụ đề có thể nhập/chỉnh sửa/xuất SRT/VTT.
-- OCR phụ đề chữ Trung in sẵn trên hình: lấy mẫu khung hình trong trình duyệt, mặc định quét 30% phía dưới, có lựa chọn giản thể/phồn thể và tần suất 0,5–1,5 giây. Giới hạn video 30 phút/lượt; cần kết nối mạng lần đầu để tải thư viện/ngôn ngữ OCR. Người dùng cần rà soát kết quả OCR. Sau khi ghép bản dịch và lưu, trình phát video MP4/WebM có thể hiển thị phụ đề tiếng Việt, tiếng Trung hoặc song ngữ ngay trên khung hình.
-- Sau OCR, sao chép danh sách tiếng Trung sang ChatGPT để dịch, dán bản Việt theo thứ tự, ghép và lưu phụ đề song ngữ. Không cần API dịch trả phí; thao tác dịch chưa tự động vì trang tĩnh không có quyền gọi mô hình ChatGPT trong tài khoản người dùng.
-- Chưa cấu hình thông tin dự án Supabase thực tế; vì vậy đăng nhập và đồng bộ chưa thể hoạt động cho tới khi có URL/khóa công khai và chạy SQL khởi tạo. Không đưa service_role key vào website.
-- Chưa nhập dữ liệu Firestore/Storage của bản Claude Artifact cũ. Cần bản export thực tế để khôi phục đủ 13 truyện và dữ liệu video cũ; README cũ chỉ là danh sách thống kê, không chứa nội dung chương.
+## Dữ liệu và đồng bộ
+- Khi chưa đăng nhập, dữ liệu được lưu cục bộ trong trình duyệt.
+- Khi đăng nhập cùng một tài khoản THƯ CÁ trên điện thoại và máy tính, truyện, chương, ảnh bìa, tủ sách, tiến độ đọc, metadata video và phụ đề được hợp nhất và đồng bộ qua Supabase.
+- THƯ CÁ nhận cập nhật qua Supabase Realtime, đồng thời kiểm tra lại khi người dùng quay lại tab/mở mạng và định kỳ trong lúc trang đang mở.
+- Tệp video tải lên được giữ trong IndexedDB để phát ngay trên thiết bị hiện tại và được tải lên bucket Supabase Storage riêng tư để phát trên thiết bị khác. Giới hạn mã nguồn hiện đặt 50 MB/video; dung lượng tổng phụ thuộc hạn mức gói Supabase.
+- Video dùng URL trực tiếp, YouTube hoặc Vimeo chỉ đồng bộ đường dẫn và metadata; nhà cung cấp video vẫn quyết định quyền truy cập.
+- Hãy xuất JSON định kỳ như một lớp sao lưu bổ sung. Không đưa Supabase Secret/service_role key vào website.
+- Nhập chương hàng loạt cần xem trước và kiểm tra thứ tự. OCR chữ Trung in trên video chạy trong trình duyệt, không gửi video lên máy chủ. Bản dịch cần được rà soát trước khi lưu.
 
 ## Triển khai
 GitHub Actions tự triển khai khi có commit lên nhánh main. Workflow: `.github/workflows/pages.yml`.
@@ -35,15 +32,13 @@ GitHub Actions tự triển khai khi có commit lên nhánh main. Workflow: `.gi
 Trong website, mở **Quản trị nội dung → Sao lưu dữ liệu → Tải bản sao lưu JSON**. Giữ bản sao lưu ở nơi an toàn trước khi nhập dữ liệu mới hoặc đổi trình duyệt.
 
 
-## Bật đồng bộ lần đầu (cần chủ dự án thực hiện)
-1. Tạo một project Supabase ở gói Free: https://supabase.com/dashboard. Gói Free hiện có $0/tháng, 500 MB database, nhưng project có thể tạm dừng sau 1 tuần không hoạt động; giới hạn và điều kiện có thể thay đổi theo nhà cung cấp.
-2. Trong Supabase, mở SQL Editor, dán và chạy toàn bộ nội dung file `supabase/schema.sql`.
-3. Vào Project Settings → API Keys (hoặc nút Connect), sao chép **Project URL** và **Publishable key** (bắt đầu bằng `sb_publishable_`). Không dùng Secret key hoặc service_role key trong website.
-4. Điền hai giá trị đó vào `supabase-config.js`, cập nhật GitHub Pages, rồi vào THƯ CÁ → Quản trị nội dung → Sao lưu dữ liệu → Đồng bộ đám mây.
-5. Tạo tài khoản bằng email/mật khẩu trong mục đồng bộ. Đăng nhập đúng tài khoản đó trên cả điện thoại và máy tính. Trước lần đồng bộ đầu tiên, hãy tải JSON dự phòng trên cả thiết bị đang có truyện.
-
-Lưu ý: Supabase Free có thể tự tạm dừng project sau một tuần không hoạt động. Phần đồng bộ này chỉ đồng bộ dữ liệu thư viện dạng JSON; video tải tệp trực tiếp vẫn nằm riêng trên thiết bị. Không gửi mật khẩu Supabase hoặc Secret/service_role key cho bất kỳ ai.
-
+## Bật đồng bộ lần đầu
+1. Tạo hoặc mở project Supabase gói Free.
+2. Trong Supabase SQL Editor, chạy toàn bộ file `supabase/schema.sql`. Script tạo bảng thư viện, chính sách RLS, bật Realtime và tạo bucket video riêng tư cùng chính sách truy cập theo tài khoản.
+3. Kiểm tra `supabase-config.js` có Project URL và Publishable key đúng. Chỉ dùng publishable key ở trình duyệt; tuyệt đối không dùng Secret/service_role key.
+4. Mở THƯ CÁ → Cài đặt → Sao lưu dữ liệu. Tạo tài khoản hoặc đăng nhập; dùng cùng email/tài khoản trên cả hai thiết bị.
+5. Trước lần đồng bộ đầu tiên, xuất JSON dự phòng trên thiết bị đang có dữ liệu. Khi đăng nhập, THƯ CÁ hợp nhất dữ liệu hiện có với thư viện trên đám mây; bản ghi mới hơn được ưu tiên và thao tác xóa được lưu bằng tombstone.
+6. Video tải lên chỉ đồng bộ tệp khi đã đăng nhập; giới hạn tải lên hiện đặt 50 MB/video. Tệp quá giới hạn sẽ không tải lên, nhưng metadata và các dữ liệu văn bản vẫn đồng bộ.
 
 ## Tiện ích đọc tiếp và dùng khi mất mạng
 - Trang Khám phá có khu vực **Đọc tiếp truyện đang theo dõi**, tự lấy chương gần nhất đã mở từ tiến độ đọc đã lưu.
