@@ -1604,3 +1604,10 @@ body:has(.tc-reader) .mobile-bottom-nav,body:has(.tc-reader) .footer{display:non
  .tc-background-choice span{font-size:9px}
  .tc-chapter-nav .tc-pill{padding:10px 11px;font-size:10px}
 }
+
+/* Reader panels are portaled to body so iOS Safari cannot clip fixed sheets inside the reader viewport. */
+#readerBackdrop.tc-sheet-backdrop{position:fixed;inset:0;z-index:9998;background:rgba(16,43,67,.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+#readerSheet.tc-sheet{position:fixed;z-index:9999;left:50%;right:auto;bottom:0;transform:translateX(-50%);width:min(680px,100vw);max-height:min(82dvh,760px);overflow-y:auto;padding-bottom:calc(24px + env(safe-area-inset-bottom));overscroll-behavior:contain}
+body:has(.tc-reader[data-theme="night"]) #readerSheet{background:#171a1e;color:#e4e5e7;border-color:#343a40}
+body:has(.tc-reader[data-theme="night"]) #readerSheet .tc-chapter-list li button,body:has(.tc-reader[data-theme="night"]) #readerSheet .tc-action-row{color:#d7e4eb;border-color:#343a40}
+@media(max-width:680px){#readerSheet.tc-sheet{width:100vw;max-height:82dvh;border-radius:22px 22px 0 0;padding-left:17px;padding-right:17px}}
