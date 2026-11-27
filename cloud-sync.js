@@ -89,7 +89,7 @@
     if(!email||password.length<8){status("Nhập email và mật khẩu tối thiểu 8 ký tự trước nhé.");return}
     status("Đang tạo tài khoản…");
     const {data,error}=await client.auth.signUp({email,password,options:{emailRedirectTo:PRODUCTION_URL}});
-    if(error)status("Không tạo được tài khoản: "+error.message);
+    if(error){const m=String(error.message||"").toLowerCase();status(m.includes("email rate limit exceeded")||m.includes("over_email_send_rate_limit")?"Supabase đã hết hạn mức gửi email miễn phí trong giờ này. Đây không phải lỗi mật khẩu. Bà đừng bấm tạo tài khoản liên tục; hãy chờ hạn mức tự làm mới hoặc cấu hình SMTP riêng để gửi email.": "Không tạo được tài khoản: "+error.message);}
     else if(data.user&&!data.user.identities?.length)status("Email này đã có tài khoản. Bà hãy đăng nhập hoặc chọn “Quên mật khẩu”, không cần đăng ký lại.");
     else if(!data.session)status("Đã gửi email xác nhận. Mở email mới nhất để xác nhận rồi quay lại THƯ CÁ.");
     else status("Đã tạo tài khoản. Đang kết nối thư viện…");
@@ -99,7 +99,7 @@
     if(!email){status("Nhập email tài khoản trước rồi bấm Quên mật khẩu.");return}
     status("Đang gửi liên kết đặt lại mật khẩu…");
     const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:PRODUCTION_URL+"?auth=recovery"});
-    if(error)status("Chưa gửi được email đặt lại mật khẩu: "+error.message);
+    if(error){const m=String(error.message||"").toLowerCase();status(m.includes("email rate limit exceeded")||m.includes("over_email_send_rate_limit")?"Hệ thống đang hết hạn mức gửi email xác thực/khôi phục trong giờ này. Hãy chờ hạn mức làm mới hoặc cấu hình SMTP riêng.":"Chưa gửi được email đặt lại mật khẩu: "+error.message);}
     else status("Nếu email đã đăng ký, Supabase sẽ gửi liên kết đặt lại mật khẩu. Hãy mở email mới nhất và dùng liên kết một lần.");
    });
    return;
