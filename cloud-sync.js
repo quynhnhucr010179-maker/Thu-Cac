@@ -48,7 +48,16 @@
   };
   return merged;
  }
+ function applyTheme(){const theme=user?.user_metadata?.theme||"ocean";document.body.dataset.userTheme=["ocean","mint","lavender","rose","night"].includes(theme)?theme:"ocean"}
+ function profile(){return user?.user_metadata||{}}
+ async function updateProfile(values){
+  if(!user||!client)throw new Error("Bà cần đăng nhập trước.");
+  const current=user.user_metadata||{},next={...current,username:String(values.username||"").trim(),display_name:String(values.display_name||"").trim(),theme:["ocean","mint","lavender","rose","night"].includes(values.theme)?values.theme:"ocean"};
+  if(values.avatar_data)next.avatar_data=values.avatar_data;
+  const {data,error}=await client.auth.updateUser({data:next});if(error)throw error;user=data.user||user;applyTheme();return user;
+ }
  function render(){
+  applyTheme();
   const panel=$("#cloud-sync-panel");if(!panel)return;
   if(!ready){
    panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Chưa tải được thư viện Supabase hoặc thiếu Project URL / Publishable key. Chưa có dữ liệu nào được gửi lên máy chủ.</p><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p>';return;
@@ -92,7 +101,8 @@
    });
    return;
   }
-  panel.innerHTML='<h3>Tài khoản THƯ CÁ</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><p class="page-desc">Khám phá và Video là thư viện chung. Tủ sách và tiến độ đọc được lưu riêng cho tài khoản này.</p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Kho truyện, toàn bộ chương, ảnh bìa và video dùng chung cho mọi tài khoản. Tủ sách và tiến độ đọc cũng đang nằm trong dữ liệu chia sẻ. Video tải tệp lên sẽ được đưa vào kho lưu trữ đám mây riêng tư (giới hạn theo cấu hình gói Supabase).</small>';
+  const meta=user.user_metadata||{};
+  panel.innerHTML='<h3>Tài khoản THƯ CÁ</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><p class="page-desc">Tên tài khoản: <b>@'+esc(meta.username||"chưa đặt")+'</b> · Tên hiển thị: <b>'+esc(meta.display_name||"chưa đặt")+'</b></p><p class="page-desc">Khám phá và Video là thư viện chung. Tủ sách và tiến độ đọc được lưu riêng cho tài khoản này.</p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Ảnh đại diện, tên hiển thị và màu sắc giao diện được lưu trong hồ sơ tài khoản này.</small>';
   $("#cloud-sync-now")?.addEventListener("click",()=>syncNow().catch(e=>status("Đồng bộ chưa thành công: "+e.message)));
   $("#cloud-signout")?.addEventListener("click",async()=>{
    status("Đang đăng xuất…");if(channel){await client.removeChannel(channel);channel=null}
@@ -240,7 +250,9 @@
   return data.signedUrl;
  }
  window.TCCloudSync={
-  init,render,syncNow,schedulePush,getVideoUrl,
+  init,render,syncNow,schedulePush,getVideoUrl,updateProfile,
+  get profile(){return profile()},
+  get accountLabel(){return user?.email||"Tài khoản THƯ CÁ"},
   get isReady(){return ready},
   get isConnected(){return !!user},
   get isApplyingRemote(){return applyingRemote}
