@@ -6,7 +6,8 @@
  const ready=!!(cfg.url&&cfg.publishableKey&&window.supabase?.createClient);
  let client=null,user=null,channel=null,pushTimer=null,pollTimer=null,syncPromise=null,applyingRemote=false,pendingPush=false;
  let lastStatus="Đang khởi tạo đồng bộ…",recoveryMode=false;
- const authError=new URLSearchParams(location.search).get("error_code");\n if(authError==="otp_expired")lastStatus="Liên kết xác nhận đã hết hạn hoặc đã được dùng. Hãy quay lại THƯ CÁ, gửi lại email xác nhận/đặt lại mật khẩu và chỉ mở liên kết mới nhất.";
+ const authError=new URLSearchParams(location.search).get("error_code");
+ if(authError==="otp_expired")lastStatus="Liên kết xác nhận đã hết hạn hoặc đã được dùng. Hãy quay lại THƯ CÁ, gửi lại email xác nhận/đặt lại mật khẩu và chỉ mở liên kết mới nhất.";
  else if(new URLSearchParams(location.search).get("error")==="access_denied")lastStatus="Liên kết xác thực không còn hợp lệ. Hãy yêu cầu gửi liên kết mới.";
  const PRODUCTION_URL="https://quynhnhucr010179-maker.github.io/Thu-Cac/";
  const $=s=>document.querySelector(s);
