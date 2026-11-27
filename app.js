@@ -113,6 +113,11 @@ function wire(){
   document.querySelectorAll("[data-reader-action]").forEach(b=>b.onclick=()=>readerAction(b.dataset.readerAction));
   document.querySelectorAll("[data-reader-theme]").forEach(b=>b.onclick=()=>{const p=readerPrefs();p.theme=b.dataset.readerTheme;saveReaderPrefs(p);renderReaderPrefs()});
   document.querySelectorAll("[data-reader-mode]").forEach(b=>b.onclick=()=>{const p=readerPrefs();p.mode=b.dataset.readerMode;saveReaderPrefs(p);renderReaderPrefs()});
+  document.querySelectorAll("[data-reader-font]").forEach(b=>b.onclick=()=>{const p=readerPrefs();p.font=b.dataset.readerFont;saveReaderPrefs(p);renderReaderPrefs()});
+  document.querySelectorAll("[data-reader-background]").forEach(b=>b.onclick=()=>{const p=readerPrefs();p.background=b.dataset.readerBackground;saveReaderPrefs(p);renderReaderPrefs()});
+  $("#tcBrightness")?.addEventListener("input",e=>{const p=readerPrefs();p.brightness=Number(e.target.value);saveReaderPrefs(p);renderReaderPrefs()});
+  $("#tcChapterProgress")?.addEventListener("change",e=>{const next=Number(e.target.value);if(Number.isInteger(next)&&activeStory?.chapters?.[next]){activeChapter=next;render()}});
+
   document.querySelectorAll("[data-reader-jump]").forEach(b=>b.onclick=()=>{activeChapter=Number(b.dataset.readerJump);closeReaderPanel();render()});
   $("#tcFontSize")?.addEventListener("input",e=>{const p=readerPrefs();p.fontSize=Number(e.target.value);saveReaderPrefs(p);renderReaderPrefs()});
   $("#tcLineHeight")?.addEventListener("input",e=>{const p=readerPrefs();p.lineHeight=Number(e.target.value);saveReaderPrefs(p);renderReaderPrefs()});
