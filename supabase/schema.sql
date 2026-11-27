@@ -50,3 +50,37 @@ create policy "THU CA users delete own videos" on storage.objects
  for delete to authenticated using (bucket_id='thuca-videos' and (storage.foldername(name))[1]=auth.uid()::text);
 
 comment on table public.thuca_library is 'THU CA per-user library snapshot with optimistic revision checks.';
+
+
+-- Shared catalogue: every authenticated THU CA account reads and contributes to
+-- the same global library. Keep the old per-user table intact for safe rollback.
+create table if not exists public.thuca_shared_library (
+  id text primary key check (id = 'global'),
+  payload jsonb not null default '{"stories":[],"videos":[],"shelf":[],"progress":{}}'::jsonb,
+  revision bigint not null default 1,
+  updated_at timestamptz not null default now()
+);
+alter table public.thuca_shared_library enable row level security;
+drop policy if exists "THU CA signed-in users read shared library" on public.thuca_shared_library;
+create policy "THU CA signed-in users read shared library" on public.thuca_shared_library
+ for select to authenticated using (true);
+drop policy if exists "THU CA signed-in users create shared library" on public.thuca_shared_library;
+create policy "THU CA signed-in users create shared library" on public.thuca_shared_library
+ for insert to authenticated with check (id = 'global');
+drop policy if exists "THU CA signed-in users update shared library" on public.thuca_shared_library;
+create policy "THU CA signed-in users update shared library" on public.thuca_shared_library
+ for update to authenticated using (true) with check (id = 'global');
+grant select, insert, update on public.thuca_shared_library to authenticated;
+revoke all on public.thuca_shared_library from anon;
+
+do $$ begin
+ alter publication supabase_realtime add table public.thuca_shared_library;
+exception when duplicate_object then null;
+end $$;
+
+-- All signed-in accounts may play shared videos, while uploads remain under
+-- the uploader's own folder. This does not make the bucket public.
+drop policy if exists "THU CA users read own videos" on storage.objects;
+drop policy if exists "THU CA authenticated users read shared videos" on storage.objects;
+create policy "THU CA authenticated users read shared videos" on storage.objects
+ for select to authenticated using (bucket_id='thuca-videos');
