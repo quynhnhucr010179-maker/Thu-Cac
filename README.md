@@ -18,7 +18,7 @@ https://quynhnhucr010179-maker.github.io/Thu-Cac/
 
 ## Dữ liệu và đồng bộ
 - Khi chưa đăng nhập, dữ liệu được lưu cục bộ trong trình duyệt.
-- Khi đăng nhập cùng một tài khoản THƯ CÁ trên điện thoại và máy tính, truyện, chương, ảnh bìa, tủ sách, tiến độ đọc, metadata video và phụ đề được hợp nhất và đồng bộ qua Supabase.
+- Tất cả tài khoản THƯ CÁ đã đăng nhập cùng đọc và đóng góp vào một thư viện chung: truyện, chương, ảnh bìa, metadata video và phụ đề do tài khoản này đăng lên sẽ xuất hiện với tài khoản khác. Tủ sách và tiến độ đọc cũng được lưu trong payload chia sẻ hiện tại.
 - THƯ CÁ nhận cập nhật qua Supabase Realtime, đồng thời kiểm tra lại khi người dùng quay lại tab/mở mạng và định kỳ trong lúc trang đang mở.
 - Tệp video tải lên được giữ trong IndexedDB để phát ngay trên thiết bị hiện tại và được tải lên bucket Supabase Storage riêng tư để phát trên thiết bị khác. Giới hạn mã nguồn hiện đặt 50 MB/video; dung lượng tổng phụ thuộc hạn mức gói Supabase.
 - Video dùng URL trực tiếp, YouTube hoặc Vimeo chỉ đồng bộ đường dẫn và metadata; nhà cung cấp video vẫn quyết định quyền truy cập.
@@ -36,7 +36,7 @@ Trong website, mở **Quản trị nội dung → Sao lưu dữ liệu → Tải
 1. Tạo hoặc mở project Supabase gói Free.
 2. Trong Supabase SQL Editor, chạy toàn bộ file `supabase/schema.sql`. Script tạo bảng thư viện, chính sách RLS, bật Realtime và tạo bucket video riêng tư cùng chính sách truy cập theo tài khoản.
 3. Kiểm tra `supabase-config.js` có Project URL và Publishable key đúng. Chỉ dùng publishable key ở trình duyệt; tuyệt đối không dùng Secret/service_role key.
-4. Mở THƯ CÁ → Cài đặt → Sao lưu dữ liệu. Tạo tài khoản hoặc đăng nhập; dùng cùng email/tài khoản trên cả hai thiết bị.
+4. Mở THƯ CÁ → Cài đặt → Sao lưu dữ liệu. Tạo tài khoản hoặc đăng nhập; dùng đăng nhập bằng bất kỳ tài khoản nào; các tài khoản cùng dùng kho nội dung chung.
 5. Trước lần đồng bộ đầu tiên, xuất JSON dự phòng trên thiết bị đang có dữ liệu. Khi đăng nhập, THƯ CÁ hợp nhất dữ liệu hiện có với thư viện trên đám mây; bản ghi mới hơn được ưu tiên và thao tác xóa được lưu bằng tombstone.
 6. Video tải lên chỉ đồng bộ tệp khi đã đăng nhập; giới hạn tải lên hiện đặt 50 MB/video. Tệp quá giới hạn sẽ không tải lên, nhưng metadata và các dữ liệu văn bản vẫn đồng bộ.
 
