@@ -13,6 +13,7 @@ function save(){try{
  mark(data.stories,previous.stories,"story");mark(data.videos,previous.videos,"video");
  if(JSON.stringify(data.progress||{})!==JSON.stringify(previous.progress||{}))data.progressUpdatedAt=now;
  if(JSON.stringify(data.shelf||[])!==JSON.stringify(previous.shelf||[]))data.shelfUpdatedAt=now;
+ if(JSON.stringify(data.shelf||[])!==JSON.stringify(previous.shelf||[])||JSON.stringify(data.progress||{})!==JSON.stringify(previous.progress||{}))data.personalUpdatedAt=now;
  data.syncTombstones=(data.syncTombstones||[]).slice(-1000);
  const snapshot=JSON.stringify(data);localStorage.setItem(KEY,snapshot);lastSavedSnapshot=snapshot;
  $("#storage-indicator").textContent=window.TCCloudSync?.isConnected?"Đã lưu · chờ đồng bộ":"Đã lưu trên thiết bị này";
