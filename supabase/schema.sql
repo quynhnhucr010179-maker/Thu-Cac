@@ -84,3 +84,23 @@ drop policy if exists "THU CA users read own videos" on storage.objects;
 drop policy if exists "THU CA authenticated users read shared videos" on storage.objects;
 create policy "THU CA authenticated users read shared videos" on storage.objects
  for select to authenticated using (bucket_id='thuca-videos');
+
+
+-- Private account data: each account owns its own shelf and reading progress.
+create table if not exists public.thuca_user_library (
+ owner_id uuid primary key references auth.users(id) on delete cascade,
+ payload jsonb not null default '{"shelf":[],"progress":{}}'::jsonb,
+ revision bigint not null default 1,
+ updated_at timestamptz not null default now()
+);
+alter table public.thuca_user_library enable row level security;
+drop policy if exists "THU CA users read own personal library" on public.thuca_user_library;
+create policy "THU CA users read own personal library" on public.thuca_user_library for select to authenticated using ((select auth.uid())=owner_id);
+drop policy if exists "THU CA users create own personal library" on public.thuca_user_library;
+create policy "THU CA users create own personal library" on public.thuca_user_library for insert to authenticated with check ((select auth.uid())=owner_id);
+drop policy if exists "THU CA users update own personal library" on public.thuca_user_library;
+create policy "THU CA users update own personal library" on public.thuca_user_library for update to authenticated using ((select auth.uid())=owner_id) with check ((select auth.uid())=owner_id);
+grant select,insert,update on public.thuca_user_library to authenticated;
+revoke all on public.thuca_user_library from anon;
+do $$ begin alter publication supabase_realtime add table public.thuca_user_library; exception when duplicate_object then null; end $$;
+comment on table public.thuca_user_library is 'THU CA private per-account shelf and reading progress.';
