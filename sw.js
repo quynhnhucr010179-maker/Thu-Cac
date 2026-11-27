@@ -1,4 +1,4 @@
-const CACHE_NAME="thuca-reader-refresh-v1";
+const CACHE_NAME="thuca-reader-reference-v2";
 const CORE_FILES=[
  "./",
  "./index.html",
