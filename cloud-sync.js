@@ -1,5 +1,5 @@
-/* THƯ CÁ — two-way cloud sync for stories, chapters, reading data and video assets.
-   Supabase Auth + Postgres JSON library + private Storage bucket. */
+/* THƯ CÁ — shared library across all signed-in accounts, with two-way contributions.
+   Supabase Auth + shared Postgres JSON library + private Storage bucket. */
 (()=> {
  const cfg=window.THUCAS_SUPABASE_CONFIG||{};
  const BUCKET="thuca-videos";
@@ -58,7 +58,7 @@
    panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Chưa tải được thư viện Supabase hoặc thiếu Project URL / Publishable key. Chưa có dữ liệu nào được gửi lên máy chủ.</p><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p>';return;
   }
   if(!user){
-   panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Tạo một tài khoản THƯ CÁ, sau đó đăng nhập đúng tài khoản này trên cả điện thoại và máy tính. Dữ liệu thư viện sẽ dùng chung.</p><form id="cloud-auth-form"><div class="field"><label>Email</label><input name="email" type="email" required autocomplete="username" placeholder="Email của bà"></div><div class="field"><label>Mật khẩu</label><input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="Ít nhất 8 ký tự"></div><div class="form-actions"><button class="primary-btn" type="submit">Đăng nhập</button><button class="secondary-btn" type="button" id="cloud-signup">Tạo tài khoản</button></div></form><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Nếu bật xác nhận email trong Supabase, bà cần mở email xác nhận trước khi đăng nhập.</small>';
+   panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Đăng nhập bằng bất kỳ tài khoản THƯ CÁ nào. Tất cả tài khoản đều xem và đóng góp vào cùng một kho truyện, chương và video.</p><form id="cloud-auth-form"><div class="field"><label>Email</label><input name="email" type="email" required autocomplete="username" placeholder="Email của bà"></div><div class="field"><label>Mật khẩu</label><input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="Ít nhất 8 ký tự"></div><div class="form-actions"><button class="primary-btn" type="submit">Đăng nhập</button><button class="secondary-btn" type="button" id="cloud-signup">Tạo tài khoản</button></div></form><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Nếu bật xác nhận email trong Supabase, bà cần mở email xác nhận trước khi đăng nhập.</small>';
    $("#cloud-auth-form")?.addEventListener("submit",async e=>{
     e.preventDefault();const fd=new FormData(e.currentTarget);status("Đang đăng nhập…");
     const {error}=await client.auth.signInWithPassword({email:String(fd.get("email")).trim(),password:String(fd.get("password"))});
@@ -75,7 +75,7 @@
    });
    return;
   }
-  panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Truyện, toàn bộ chương, ảnh bìa, tủ sách, tiến độ đọc, thông tin video và phụ đề được đồng bộ. Video tải tệp lên sẽ được đưa vào kho lưu trữ đám mây riêng tư (giới hạn theo cấu hình gói Supabase).</small>';
+  panel.innerHTML='<h3>Đồng bộ giữa điện thoại và máy tính</h3><p class="page-desc">Đang đăng nhập: <b>'+esc(user.email||"tài khoản THƯ CÁ")+'</b></p><div class="form-actions"><button class="primary-btn" id="cloud-sync-now">Đồng bộ ngay</button><button class="secondary-btn" id="cloud-signout">Đăng xuất</button></div><p id="cloud-sync-status" class="notice">'+esc(lastStatus)+'</p><small class="page-desc">Kho truyện, toàn bộ chương, ảnh bìa và video dùng chung cho mọi tài khoản. Tủ sách và tiến độ đọc cũng đang nằm trong dữ liệu chia sẻ. Video tải tệp lên sẽ được đưa vào kho lưu trữ đám mây riêng tư (giới hạn theo cấu hình gói Supabase).</small>';
   $("#cloud-sync-now")?.addEventListener("click",()=>syncNow().catch(e=>status("Đồng bộ chưa thành công: "+e.message)));
   $("#cloud-signout")?.addEventListener("click",async()=>{
    status("Đang đăng xuất…");if(channel){await client.removeChannel(channel);channel=null}
@@ -107,7 +107,7 @@
  }
  async function writeMerged(local){
   for(let attempt=0;attempt<4;attempt++){
-   const {data:row,error:readError}=await client.from("thuca_library").select("payload,revision,updated_at").eq("owner_id",user.id).maybeSingle();
+   const {data:row,error:readError}=await client.from("thuca_shared_library").select("payload,revision,updated_at").eq("id","global").maybeSingle();
    if(readError)throw readError;
    const remote=row?.payload||{};
    const merged=mergeLibrary(local,remote);
@@ -120,7 +120,7 @@
    }
    const now=new Date().toISOString();
    if(!row){
-    const {error}=await client.from("thuca_library").insert({owner_id:user.id,payload:merged,revision:1,updated_at:now});
+    const {error}=await client.from("thuca_shared_library").insert({id:"global",payload:merged,revision:1,updated_at:now});
     if(error){
      if(error.code==="23505")continue;
      throw error;
@@ -129,7 +129,7 @@
     return {assetErrors,changed:true};
    }
    const revision=Number(row.revision)||1;
-   const {data:updated,error}=await client.from("thuca_library").update({payload:merged,revision:revision+1,updated_at:now}).eq("owner_id",user.id).eq("revision",revision).select("revision").maybeSingle();
+   const {data:updated,error}=await client.from("thuca_shared_library").update({payload:merged,revision:revision+1,updated_at:now}).eq("id","global").eq("revision",revision).select("revision").maybeSingle();
    if(error)throw error;
    if(!updated)continue;
    bridge().setData(merged);
@@ -146,7 +146,7 @@
    try{
     const result=await writeMerged(b.getData());
     const count=result.assetErrors.length;
-    status(count?"Đã đồng bộ truyện và chương; "+count+" video chưa tải lên được. "+result.assetErrors.slice(0,2).join(" | "):"Đã đồng bộ xong. Điện thoại và máy tính đang dùng chung thư viện.");
+    status(count?"Đã đồng bộ truyện và chương; "+count+" video chưa tải lên được. "+result.assetErrors.slice(0,2).join(" | "):"Đã đồng bộ xong. Mọi tài khoản THƯ CÁ đang dùng chung thư viện.");
     return result;
    }finally{applyingRemote=false;if(pendingPush){pendingPush=false;schedulePush()}}
   })();
@@ -161,8 +161,8 @@
  function subscribe(){
   if(channel){client.removeChannel(channel);channel=null}
   if(!user)return;
-  channel=client.channel("thuca-library-"+user.id)
-   .on("postgres_changes",{event:"*",schema:"public",table:"thuca_library",filter:"owner_id=eq."+user.id},()=>{
+  channel=client.channel("thuca-shared-library-global")
+   .on("postgres_changes",{event:"*",schema:"public",table:"thuca_shared_library"},()=>{
     if(!applyingRemote)syncNow().catch(e=>status("Không nhận được thay đổi mới: "+e.message));
    })
    .subscribe(state=>{if(state==="CHANNEL_ERROR")status("Kết nối cập nhật trực tiếp bị gián đoạn; THƯ CÁ vẫn kiểm tra khi mở lại hoặc quay về tab.")});
