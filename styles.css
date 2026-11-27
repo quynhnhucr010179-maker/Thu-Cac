@@ -1537,7 +1537,7 @@ body[data-user-theme="night"] .profile-shortcuts button,body[data-user-theme="ni
 .tc-reader[data-theme="paper"]{background:#f3ead9;color:#493d2e}
 .tc-reader[data-theme="white"]{background:#fff;color:#202b34}
 .tc-reader[data-theme="sky"]{background:#dce9f5;color:#172b38}
-.tc-reading-surface{filter:brightness(calc(var(--tc-brightness)*1%));transition:filter .15s ease}
+.tc-reading-surface{filter:brightness(var(--tc-brightness,1));transition:filter .15s ease}
 .tc-reader[data-font="serif"] .tc-prose{font-family:Georgia,"Noto Serif",serif}
 .tc-reader[data-font="system"] .tc-prose{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 .tc-reader[data-font="book"] .tc-prose{font-family:"Palatino Linotype",Palatino,Georgia,serif;letter-spacing:.025em}
