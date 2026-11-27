@@ -5,7 +5,9 @@
  const BUCKET="thuca-videos";
  const ready=!!(cfg.url&&cfg.publishableKey&&window.supabase?.createClient);
  let client=null,user=null,channel=null,pushTimer=null,pollTimer=null,syncPromise=null,applyingRemote=false,pendingPush=false;
- let lastStatus="Đang khởi tạo đồng bộ…",recoveryMode=false;\n const authError=new URLSearchParams(location.search).get("error_code");\n if(authError==="otp_expired")lastStatus="Liên kết xác nhận đã hết hạn hoặc đã được dùng. Hãy quay lại THƯ CÁ, gửi lại email xác nhận/đặt lại mật khẩu và chỉ mở liên kết mới nhất.";\n else if(new URLSearchParams(location.search).get("error")==="access_denied")lastStatus="Liên kết xác thực không còn hợp lệ. Hãy yêu cầu gửi liên kết mới.";
+ let lastStatus="Đang khởi tạo đồng bộ…",recoveryMode=false;
+ const authError=new URLSearchParams(location.search).get("error_code");\n if(authError==="otp_expired")lastStatus="Liên kết xác nhận đã hết hạn hoặc đã được dùng. Hãy quay lại THƯ CÁ, gửi lại email xác nhận/đặt lại mật khẩu và chỉ mở liên kết mới nhất.";
+ else if(new URLSearchParams(location.search).get("error")==="access_denied")lastStatus="Liên kết xác thực không còn hợp lệ. Hãy yêu cầu gửi liên kết mới.";
  const PRODUCTION_URL="https://quynhnhucr010179-maker.github.io/Thu-Cac/";
  const $=s=>document.querySelector(s);
  const bridge=()=>window.THUCAS_DATA_BRIDGE;
@@ -227,7 +229,8 @@
  }
  async function init(){
   if(!ready){render();return}
-  client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});\n  if(authError){history.replaceState({},document.title,location.pathname);}
+  client=window.supabase.createClient(cfg.url,cfg.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  if(authError){history.replaceState({},document.title,location.pathname);}
   const {data,error}=await client.auth.getSession();if(error)throw error;
   user=data.session?.user||null;render();
   if(user){try{await syncNow()}catch(e){status("Chưa tải được thư viện ban đầu: "+e.message)}subscribe()}
