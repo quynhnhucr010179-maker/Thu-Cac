@@ -1,4 +1,4 @@
-const CACHE_NAME="thuca-profile-v1";
+const CACHE_NAME="thuca-shelf-auth-v2";
 const CORE_FILES=[
  "./",
  "./index.html",
