@@ -1,4 +1,4 @@
-const CACHE_NAME="thuca-shell-v4";
+const CACHE_NAME="thuca-profile-v1";
 const CORE_FILES=[
  "./",
  "./index.html",
