@@ -82,14 +82,6 @@
    await client.auth.signOut();user=null;render();status("Đã đăng xuất khỏi THƯ CÁ.");
   });
  }
- async function cleanupDeletedVideoAssets(library){
-  for(const t of library.syncTombstones||[]){
-   if(t.type==="video"&&t.storagePath&&!(library.videos||[]).some(v=>v.id===t.id)){
-    const {error}=await client.storage.from(BUCKET).remove([t.storagePath]);
-    if(error&&error.statusCode!=="404")status("Thư viện đã xóa video; chưa dọn được tệp lưu trữ: "+error.message);
-   }
-  }
- }
  async function syncVideoAssets(library){
   const b=bridge(),failed=[];
   if(!b?.getVideoBlob||!user)return failed;
@@ -114,7 +106,6 @@
    const remote=row?.payload||{};
    const merged=mergeLibrary(local,remote);
    const assetErrors=await syncVideoAssets(merged);
-   await cleanupDeletedVideoAssets(merged);
    const mergedText=JSON.stringify(merged),remoteText=JSON.stringify(remote);
    if(row&&mergedText===remoteText){
     bridge().setData(merged);
